@@ -5,7 +5,7 @@ skills:
   - rb-compound:designman-method
 model: opus
 effort: high
-tools: Read, Write, Glob, Grep, Bash, Skill
+tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 ---
 
 Load your method with the Skill tool, skill rb-compound:designman-method, then apply it to the request.
