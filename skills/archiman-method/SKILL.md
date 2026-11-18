@@ -80,7 +80,7 @@ Each package entry file opens with the header of the `rb-compound:code-comments`
 
 1. Find the design files that touch the package: grep the `features/` tree (`__done/` included) for the package path and for the names of its API.
 2. For each, keep the `R-` IDs whose requirement the package implements, by ID only.
-3. Rewrite the header block, nothing else of the file. A missing header is created.
+3. Rewrite the header block, nothing else of the file. A missing header is created. A `Design:` line naming a design outside the repository, by its name alone, is kept with its `Requirements:` line.
 
 ## check
 
@@ -90,7 +90,7 @@ For each archi file in scope, report:
 - apps, modules or packages present in the code and absent from the file;
 - dependencies the manifests declare and the file does not, or the reverse;
 - broken Parent and Children links;
-- package headers: a `Design:` path that does not exist, an `R-` absent from its design file, a requirement redefined by a newer design file, a design file touching the package and missing from the header, a missing header;
+- package headers: a `Design:` path that does not exist (a design named alone, living outside the repository, is not reported), an `R-` absent from its design file, a requirement redefined by a newer design file, a design file touching the package and missing from the header, a missing header;
 - public functions without their one-line comment;
 - the code moved significantly since `**Last updated:**` (`git log` on the paths).
 

@@ -23,7 +23,7 @@ Each package has one entry file carrying its API: `index.ts`, `package-info.java
 ```
 
 - One line saying what the package is for.
-- The design file, by its path from the project root.
+- The design file, by its path from the project root. A design living outside the repository is named alone: `Design: role-skills-plan`.
 - The requirements it implements, by ID only. Their content lives in the design file and is never restated.
 - Several design files touch the package: one `Design:` line each, each followed by its own `Requirements:` line.
 - No design file: the purpose line alone.

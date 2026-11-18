@@ -68,11 +68,11 @@ A term earns an entry when it names something the pipeline acts on. `docman` add
 - agent — a definition under `agents/`, called deliberately, running in its own context window.
 - workflow agent — an agent that makes up a step of the pipeline, from a closed list: epicman, storyman, bsman, designman, tddman, codeman, docman, archiman, doneman, bulkman, fixman, boss, wkman. Every other agent is a utility agent: Explore, naming, general-purpose, scriptman, toolman…
 - skill — a procedure under `skills/`, loaded into the caller's context rather than delegated.
-- role skill — the skill `<agent>-method` of `rb-compound` that carries an agent's method, with its templates under `assets/` and its scripts under `scripts/`. The agent's file holds only its header and loads it with the Skill tool; a request for the agent launches the agent, never the role skill inline.
+- role skill — the skill `<agent>-method` of `rb-compound` that carries an agent's method, with its templates under `assets/`, its scripts under `scripts/` and its references under `references/`. The agent's file holds only its header and loads it with the Skill tool; a request for the agent launches the agent, never the role skill inline.
 - command — a slash entry under `commands/`.
 - plugin — a Claude Code package of skills, agents, hooks and commands, installed from a marketplace. Its skills are listed as `<plugin>:<skill>`.
 - marketplace — a catalogue of plugins that a machine adds once, then updates. `robusta-build` is the repository `robusta-build/rb-compound`, its catalogue in `.claude-plugin/marketplace.json`.
-- `rb-compound` — the plugin of Compound, in the private repository `robusta-build/rb-compound`, under PolyForm Noncommercial 1.0.0. It carries the agents epicman, storyman, bsman and bulkman with their role skills, `brainstorm`, and the shared skills.
+- `rb-compound` — the plugin of Compound, in the private repository `robusta-build/rb-compound`, under PolyForm Noncommercial 1.0.0. It carries every workflow agent but boss, each with its role skill, the skills `brainstorm` and `compound-routine`, the shared skills and the command `/rb-compound:start`.
 
 Work whose artefacts do not survive the subagent belongs in a skill; work that must be called on purpose rather than fired from any caller's context is an agent.
 
