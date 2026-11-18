@@ -93,7 +93,7 @@ Once implementation is complete, the checker passes and existing tests are green
 
 3. **After approval**, execute these steps:
    - Run the `rb-compound:checker` skill to verify everything passes
-   - Remind user: "Ready to commit. Use /commit when satisfied."
+   - Remind user: "Ready to commit. Use /rb-compound:commit when satisfied."
    - Name the apps, modules and packages touched. Documentation, archi files and the epic are updated by `rb-compound:storyman submit` (docman, archiman, epicman), never by you.
 
 ## Closing checklist

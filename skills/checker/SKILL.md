@@ -47,7 +47,7 @@ git status --porcelain
 | Option | Action |
 |--------|--------|
 | A | Stash changes (`git stash -u`) and proceed |
-| B | Commit now with /commit, then proceed |
+| B | Commit now with /rb-compound:commit, then proceed |
 | C | Discard changes (`git checkout .`) - DESTRUCTIVE |
 | D | Abort - I'll handle this manually |
 
@@ -219,7 +219,7 @@ Present the final status:
 Files to commit:
 <git status output>
 
-Ready for review. Use /commit when satisfied.
+Ready for review. Use /rb-compound:commit when satisfied.
 ```
 
 **Do not commit automatically.** The user reviews and decides when to commit.

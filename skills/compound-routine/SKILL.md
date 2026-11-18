@@ -47,7 +47,7 @@ Commits: a request `boss <target>` is the user's explicit request for the commit
 
 ## pmf
 
-On from `pmf on` to `pmf off`, never inferred: off until `pmf on` is typed. In pmf, `rb-compound:boss` works from the epic files only, with `rb-compound:epicman` and `rb-compound:tddman`, skipping `rb-compound:bsman`, the brainstorm, `rb-compound:designman`, design docs, `rb-compound:docman` and `rb-compound:archiman`. Epic files stay updated. It may commit, push and merge, never directly on `main`, preferring `develop` merged into `main`. It picks the next epic itself and skips a blocked one. Without `pmf on`, `rb-compound:boss` never pushes.
+On from `pmf on` to `pmf off`, never inferred: off until `pmf on` is typed. In pmf, `rb-compound:boss` works from the epic files only, with `rb-compound:epicman` and `rb-compound:tddman`, skipping `rb-compound:bsman`, the brainstorm, `rb-compound:designman`, design docs, `rb-compound:docman` and `rb-compound:archiman`. Epic files stay updated. It commits on the current branch and pushes it, never forced, switching and merging nothing. It picks the next epic itself and skips a blocked one. Without `pmf on`, `rb-compound:boss` never pushes.
 
 ## nxt
 
