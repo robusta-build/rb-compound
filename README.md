@@ -1,6 +1,6 @@
 # rb-compound
 
-Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its agents, its skills and the `/rb-compound:start` command. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`. The plugin has no hook.
+Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its agents, its skills, the `/rb-compound:start` command and a `SessionStart` hook. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`.
 
 ## Agents
 
@@ -23,7 +23,7 @@ An agent file holds only its header; its method is its role skill, loaded with t
 
 ## Skills
 
-- compound-routine: the Compound routine, `nxt`, pmf mode, the boss exception for commits and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. Loaded on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
+- compound-routine: the Compound routine, `nxt`, pmf mode, the boss exception for commits and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. The hook injects it into every session; its rules apply on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
   - `references/ubiquitous-language.md`: the Compound glossary.
   - `references/progress.md`: the grammar of a design's `## Progress` block, written by the main agent during implementation.
 - Role skills: `rb-compound:<agent>-method`, the method of each agent; its templates sit under `assets/`, its scripts under `scripts/`, its references under `references/`. A request for an agent launches the agent, never its role skill inline.
@@ -42,6 +42,14 @@ Agents and role skills name every skill `rb-compound:<skill>`. An agent or a ski
 ## Command
 
 `/rb-compound:start` reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the project, loads `rb-compound:compound-routine`, then runs `nxt`. A missing file is named on one line and not created.
+
+## Hook
+
+`hooks/hooks.json` runs `hooks/session-start.mjs` on `SessionStart` at startup, `/clear` and compaction: it prints the body of `compound-routine` into the context. Claude knows the routine and its words from the first request. A session started with `claude --agent rb-compound:<agent>` gets it, a subagent does not, and a resumed or forked session keeps the injection of its origin. The hook writes no file and exports no variable.
+
+## Compatibility
+
+The hook runs `node` without a shell and needs Node 20.11 or later on the `PATH`: on Windows, with or without Git Bash, as a real `node.exe`, not a `node.cmd` shim; on macOS and Linux, as `node`. Without Node, or with hooks disabled, the session starts with at most one non-blocking hook notice and `compound-routine` loads by its description on a call to Compound.
 
 ## bulker
 
