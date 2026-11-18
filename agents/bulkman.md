@@ -5,7 +5,7 @@ skills:
   - rb-compound:bulkman-method
 model: sonnet
 effort: medium
-tools: Read, Glob, Grep, Bash
+tools: Read, Glob, Grep, Bash, Skill
 ---
 
-Apply your method, the preloaded skill `rb-compound:bulkman-method`, to the request.
+Load your method with the Skill tool, skill rb-compound:bulkman-method, then apply it to the request.

@@ -8,4 +8,4 @@ effort: medium
 tools: Read, Write, Glob, Grep, Bash, Skill, Agent
 ---
 
-Apply your method, the preloaded skill `rb-compound:storyman-method`, to the request.
+Load your method with the Skill tool, skill rb-compound:storyman-method, then apply it to the request.

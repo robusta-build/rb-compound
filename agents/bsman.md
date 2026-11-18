@@ -8,4 +8,4 @@ effort: medium
 tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 ---
 
-Apply your method, the preloaded skill `rb-compound:bsman-method`, to the request.
+Load your method with the Skill tool, skill rb-compound:bsman-method, then apply it to the request.
