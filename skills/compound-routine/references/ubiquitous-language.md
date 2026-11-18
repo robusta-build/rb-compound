@@ -56,7 +56,7 @@ A term earns an entry when it names something the pipeline acts on. `docman` add
 - create — `<agent> <target>`, run by the human or `boss`: `storyman <feature>`, `designman <feature>`, `epicman <epic>`. A story is born ACTIVE, a design doc DRAFT. On an existing document, same as update.
 - update — `<agent> update <target> [: event]`, run by the human or a calling agent. A story whose scope or contracts change returns to ACTIVE, a design doc to DRAFT. `storyman update <epic> [Bn]` runs one update per story carrying a filled Resolution. Hidden alias: `refine`.
 - approve — no command: the human, or `boss`, writes APPROVED on the design doc's Status line.
-- submit — `storyman submit <feature>`, run by the human or `boss` on a committed, user-validated feature. Story → SUBMITTED, design doc → IMPLEMENTED. Push and merge request stay human. Hidden alias: `land`.
+- submit — `storyman submit <feature>`, run by the human or `boss` on a committed, user-validated feature. Story → SUBMITTED, design doc → IMPLEMENTED. Push and merge request stay human; in pmf, boss pushes the current branch. Hidden alias: `land`.
 - done — `storyman done <feature>`, run by the human once merged; `epicman done <epic>` across an epic. Story SUBMITTED → DONE, then `doneman` archives it into `__done/`.
 - `fixman <target>` — run by the human or the main agent: captures a bug into `<owner>.fix.md`, document OPEN. tddman or codeman stamps `Fixed:`, and the last stamp flips it CLOSED.
 - `fixman reopen <target> : <key> : <why>` — a fix that did not hold: `Fixed:` emptied, document back to OPEN.
@@ -93,7 +93,7 @@ Work whose artefacts do not survive the subagent belongs in a skill; work that m
 
 ## Writing in French
 
-Compound's shipped markdown is English; four agent definitions are French. When a French word names something this glossary already names, it refers to that term and carries no meaning of its own:
+Compound's shipped markdown is English, except the role skills of epicman, storyman and designman and the epic and story templates, which are French. When a French word names something this glossary already names, it refers to that term and carries no meaning of its own:
 
 - geste — edit, write, refactor, step...  depending on which is meant. Never "gesture" in English.
 - gabarit — template.

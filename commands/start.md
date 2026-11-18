@@ -7,12 +7,14 @@ Package start — the command /rb-compound:start: the project's purpose, then th
 
 Design: bootstrap-skill
 Requirements: R-BOOTSTRAP-05, R-BOOTSTRAP-81
+Design: plugin-rollout
+Requirements: R-PLUGINROLLOUT-01
 -->
 
 Load the context of this project without reading too much. Write nothing, and read no file outside this project and the rb-compound plugin.
 
 1. Read, with the Read tool, one call per file, at the root of the working directory: `README.md`, `ubiquitous-language.md` and `root.archi.md`. No other `*.archi.md`.
-2. Load the skill `rb-compound:compound-routine` with the Skill tool.
+2. Load the skill `rb-compound:compound-routine` with the Skill tool, once, only when the context does not hold the line `rb-compound:compound-routine is loaded below; do not load it again with the Skill tool.`
 3. Run `nxt` as that skill describes.
 
 Print, in this order:

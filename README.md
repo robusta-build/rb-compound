@@ -45,7 +45,7 @@ pmf:
 
 ## Skills
 
-- compound-routine: the Compound routine, `nxt`, pmf mode, the boss hand-over and its exception for commits, and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. The hook injects it into every session; its rules apply on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
+- compound-routine: the Compound routine, `nxt`, pmf mode, the boss hand-over and its exception for commits, and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. The hook injects it into every main session, `claude --agent` included; a subagent does not receive it. Its rules apply on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
   - `references/ubiquitous-language.md`: the Compound glossary.
   - `references/progress.md`: the grammar of a design's `## Progress` block, written by the main agent during implementation.
 - Role skills: `rb-compound:<agent>-method`, the method of each agent; its templates sit under `assets/`, its scripts under `scripts/`, its references under `references/`. A request for an agent launches the agent, never its role skill inline.
@@ -64,7 +64,7 @@ Agents and role skills name every skill `rb-compound:<skill>`. An agent or a ski
 
 ## Command
 
-`/rb-compound:start` reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the project, loads `rb-compound:compound-routine`, then runs `nxt`. A missing file is named on one line and not created.
+`/rb-compound:start` reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the project, loads `rb-compound:compound-routine` only when the hook did not inject it, then runs `nxt`. A missing file is named on one line and not created.
 
 ## Hook
 
