@@ -1,0 +1,12 @@
+{
+  "name": "robusta-build",
+  "description": "Claude Code plugins of Robusta Build.",
+  "owner": { "name": "Robusta Build" },
+  "plugins": [
+    {
+      "name": "rb-compound",
+      "source": "./",
+      "description": "Compound, the documentation-first workflow of Robusta Build: its agents, their role skills and the shared skills."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@robusta/bulker",
+  "version": "0.6.0",
+  "private": true,
+  "description": "Deterministic CLI for the Compound bulk round trip: aggregate Open Questions & Gaps into <epic>.bulk.md, push filled Resolutions back into their source documents.",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@masala/parser": "2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vitest": "^2.1.0"
+  }
+}

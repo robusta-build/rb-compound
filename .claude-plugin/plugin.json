@@ -1,0 +1,6 @@
+{
+  "name": "rb-compound",
+  "description": "Compound, the documentation-first workflow of Robusta Build: its agents, their role skills and the shared skills.",
+  "author": { "name": "Robusta Build" },
+  "license": "PolyForm-Noncommercial-1.0.0"
+}
