@@ -4,7 +4,7 @@ Compound, the documentation-first workflow of Robusta Build, as a Claude Code pl
 
 ## Agents
 
-Twelve agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `medium` except designman, on `opus` with effort `high`, and docman, on `haiku` with effort `low`:
+Thirteen agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `medium` except designman and boss, on `opus` with effort `high`, and docman, on `haiku` with effort `low`:
 
 - epicman: writes and maintains `<epic>.epic.md`; `epicman <epic>`, `epicman update <epic> : <event>`, `epicman done <epic>`.
 - storyman: writes and maintains `<feature>.story.md`; `storyman <feature>`, `storyman update <feature>`, `storyman update <epic> [Bn]`, `storyman submit <feature>`, `storyman done <feature>`.
@@ -18,16 +18,39 @@ Twelve agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `mediu
 - archiman: sole writer of the `*.archi.md` files and of the package headers, launched by `storyman submit` after docman; `archiman <path>`, `archiman root`, `archiman check [path]`.
 - doneman: checks a finished and tested feature, moves it into `__done/` and rewrites the paths pointing into it, then the epic with its last story; launched by `storyman done`, `doneman [<feature>]`.
 - wkman: opens, resumes or closes the long worktree of a feature (`feat/<feature>`) or an epic (`epic/<epic>`), through herdr when herdr is usable, git otherwise; `wk <name>`, `wk open <name>`, `wk close <name>`.
+- boss: runs the pipeline on a story or an epic without human validation, in its own session, see §boss.
 
 An agent file holds only its header; its method is its role skill, loaded with the Skill tool.
 
+## boss
+
+`rb-compound:boss` is the main agent of its own session:
+
+```
+claude --agent rb-compound:boss "boss <target>"
+```
+
+`boss <target>`, `boss atw <target>` or `boss prepare <target>` typed in another session gets this line from `compound-routine` and launches nothing. No `settings.json` of the plugin carries an `agent` key: boss is never the default agent of a session. In its session, boss launches only `rb-compound:` storyman, bsman, designman, tddman, codeman, epicman, docman and archiman.
+
+- `boss [atw | all the way] <target> [until <step>]`: runs a feature, a story path, an epic `[batch <Bn>]` or `new story <name>` through story, brainstorm, design, code, docs and submit, or up to `<step>`: story, brainstorm, design, code or submit. One commit per step on `feat/<story>` or `epic/<epic>`, never a push. rloq by default; `atw` decides the `ask` entries itself, signed `lgtm (boss atw)` and logged in `decisions-and-questions.md`. A run never goes past SUBMITTED: `storyman done` is left to the user.
+- `boss prepare <feature> | <epic> [batch <Bn>]`: the housekeeping before a run, on an existing target: folds the answers, signs the entries that need no human, approves the designs that pass the check, applies the arbitrated fixes, commits. It writes no story, brainstorm or design.
+- `boss roadmap`: keeps `roadmap.yaml` from the build manifests Git tracks, edited in place. A module it cannot repair (invalid or duplicate id, unknown kind, no path, unknown key) is left as is and named in the report. No `roadmap.md` is read or generated; the commit is proposed, never run.
+
+pmf:
+
+- `pmf on` and `pmf off` are typed in boss's session, the launch message included: `claude --agent rb-compound:boss "pmf on"`. pmf lasts until `pmf off` or the end of the session; a `pmf on` typed in another session does not reach boss.
+- `boss` alone takes the next unblocked epic: not done, on no `**Depends on :**` cycle, every epic it depends on done; among several, the epic whose file was committed last. `boss <epic>` runs that epic.
+- boss launches only epicman and tddman, writes no story, brainstorm or design, and decides the epic's `ask` entries as atw does.
+- boss commits on the current branch and pushes it, never forced. It switches, creates and merges no branch, and never pulls or rebases. A refused push, no remote or a `wip` commit leaves the commits local, listed on a `Not pushed:` line of the report.
+
 ## Skills
 
-- compound-routine: the Compound routine, `nxt`, pmf mode, the boss exception for commits and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. The hook injects it into every session; its rules apply on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
+- compound-routine: the Compound routine, `nxt`, pmf mode, the boss hand-over and its exception for commits, and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. The hook injects it into every session; its rules apply on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
   - `references/ubiquitous-language.md`: the Compound glossary.
   - `references/progress.md`: the grammar of a design's `## Progress` block, written by the main agent during implementation.
 - Role skills: `rb-compound:<agent>-method`, the method of each agent; its templates sit under `assets/`, its scripts under `scripts/`, its references under `references/`. A request for an agent launches the agent, never its role skill inline.
 - brainstorm: the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`. `rb-compound:bsman` is its autonomous variant.
+- commit: the commit convention `type(scope): description` and the precommit checklist, typed `/rb-compound:commit` by the user and loaded by boss before its first commit. Its description has Claude load it before any git commit, in every session where the plugin is installed.
 - Shared skills, which name each other by short name:
   - boundaries: names the boundaries between apps, modules and packages, and shows each API as types, interfaces and client code.
   - checker: runs build, lint and tests before and after coding.

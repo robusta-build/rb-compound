@@ -4,6 +4,9 @@ description: Load the purpose of this project and the Compound routine, then run
 
 <!--
 Package start — the command /rb-compound:start: the project's purpose, then the Compound routine and nxt.
+
+Design: bootstrap-skill
+Requirements: R-BOOTSTRAP-05, R-BOOTSTRAP-81
 -->
 
 Load the context of this project without reading too much. Write nothing, and read no file outside this project and the rb-compound plugin.

@@ -72,7 +72,7 @@ A term earns an entry when it names something the pipeline acts on. `docman` add
 - command — a slash entry under `commands/`.
 - plugin — a Claude Code package of skills, agents, hooks and commands, installed from a marketplace. Its skills are listed as `<plugin>:<skill>`.
 - marketplace — a catalogue of plugins that a machine adds once, then updates. `robusta-build` is the repository `robusta-build/rb-compound`, its catalogue in `.claude-plugin/marketplace.json`.
-- `rb-compound` — the plugin of Compound, in the private repository `robusta-build/rb-compound`, under PolyForm Noncommercial 1.0.0. It carries every workflow agent but boss, each with its role skill, the skills `brainstorm` and `compound-routine`, the shared skills and the command `/rb-compound:start`.
+- `rb-compound` — the plugin of Compound, in the private repository `robusta-build/rb-compound`, under PolyForm Noncommercial 1.0.0. It carries every workflow agent, each with its role skill, the skills `brainstorm`, `compound-routine` and `commit`, the shared skills and the command `/rb-compound:start`.
 
 Work whose artefacts do not survive the subagent belongs in a skill; work that must be called on purpose rather than fired from any caller's context is an agent.
 
