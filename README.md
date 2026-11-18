@@ -4,7 +4,7 @@ Compound, the documentation-first workflow of Robusta Build, as a Claude Code pl
 
 ## Agents
 
-Eight agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `medium` except designman, on `opus` with effort `high`:
+Twelve agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `medium` except designman, on `opus` with effort `high`, and docman, on `haiku` with effort `low`:
 
 - epicman: writes and maintains `<epic>.epic.md`; `epicman <epic>`, `epicman update <epic> : <event>`, `epicman done <epic>`.
 - storyman: writes and maintains `<feature>.story.md`; `storyman <feature>`, `storyman update <feature>`, `storyman update <epic> [Bn]`, `storyman submit <feature>`, `storyman done <feature>`.
@@ -14,8 +14,12 @@ Eight agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `medium
 - tddman: implements a design test-first; `LFG`, or `LFG fast` without the test review pause.
 - codeman: implements code first, tests only where they pay; `LFG`, or `LFG fast` without the review pause.
 - fixman: captures a bug into `<owner>.fix.md`; `fixman <bug>`, `fixman reopen <target> : <FIX-INFIX-n> : <why>`.
+- docman: rewrites the documentation named by a story's `## Documentation updates` plan, launched by `storyman submit`; `docman <story | feature>`, and `docman check [feature | path]`, which reports drift and slop without writing.
+- archiman: sole writer of the `*.archi.md` files and of the package headers, launched by `storyman submit` after docman; `archiman <path>`, `archiman root`, `archiman check [path]`.
+- doneman: checks a finished and tested feature, moves it into `__done/` and rewrites the paths pointing into it, then the epic with its last story; launched by `storyman done`, `doneman [<feature>]`.
+- wkman: opens, resumes or closes the long worktree of a feature (`feat/<feature>`) or an epic (`epic/<epic>`), through herdr when herdr is usable, git otherwise; `wk <name>`, `wk open <name>`, `wk close <name>`.
 
-An agent file holds only its header; its method is its role skill, loaded with the Skill tool. `storyman submit` and `storyman done` launch `rb-compound:docman`, `archiman` and `doneman`, which the plugin does not ship; `submit` stops at its first step.
+An agent file holds only its header; its method is its role skill, loaded with the Skill tool.
 
 ## Skills
 
