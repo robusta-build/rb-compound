@@ -6,7 +6,7 @@
     {
       "name": "rb-compound",
       "source": "./",
-      "description": "Shared skills of Compound, the documentation-first workflow of Robusta Build; agents to come."
+      "description": "Compound, the documentation-first workflow of Robusta Build: the planning agents epicman, storyman, bsman and bulkman, their role skills and the shared skills."
     }
   ]
 }

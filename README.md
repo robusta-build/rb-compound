@@ -1,20 +1,36 @@
 # rb-compound
 
-The shared skills of Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`.
+Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its planning agents and its skills. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`. The plugin has no hook or command.
+
+## Agents
+
+Four agents, launched as `rb-compound:<agent>`, each on `sonnet` with effort `medium`:
+
+- epicman: writes and maintains `<epic>.epic.md`; `epicman <epic>`, `epicman update <epic> : <event>`, `epicman done <epic>`.
+- storyman: writes and maintains `<feature>.story.md`; `storyman <feature>`, `storyman update <feature>`, `storyman update <epic> [Bn]`, `storyman submit <feature>`, `storyman done <feature>`.
+- bsman: autonomous brainstorm of a story into `<feature>.brainstorm.md`.
+- bulkman: runs `bulker`; `bulkman <epic>` gathers the epic's Open Questions & Gaps into `<epic>.bulk.md`, `bulkman resolve <epic>` copies the filled Resolutions back to their documents.
+
+An agent file holds only its header; its method is its role skill, loaded with the Skill tool. `storyman submit` and `storyman done` launch `rb-compound:docman`, `archiman` and `doneman`, which the plugin does not ship; `submit` stops at its first step.
 
 ## Skills
 
-Seven skills, listed as `rb-compound:<skill>`. They name each other by short name. The plugin has no agent, hook or command.
+- Role skills: `rb-compound:<agent>-method`, the method of each agent, with its template under `assets/` or its script under `scripts/`. A request for an agent launches the agent, never its role skill inline.
+- brainstorm: the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`. `rb-compound:bsman` is its autonomous variant.
+- Shared skills, which name each other by short name:
+  - boundaries: names the boundaries between apps, modules and packages, and shows each API as types, interfaces and client code.
+  - checker: runs build, lint and tests before and after coding.
+  - code-comments: rules for comments in code, write and review modes.
+  - deslop: rules against AI slop in technical writing, English and French, write and review modes.
+  - open-question: format of the `## Open Questions & Gaps` section.
+  - relevant-oq: sorts a doubt into `ask`, `decide` or nothing before it is written.
+  - schematic: ASCII schematics in markdown, 80 columns.
 
-- boundaries: names the boundaries between apps, modules and packages, and shows each API as types, interfaces and client code.
-- checker: runs build, lint and tests before and after coding.
-- code-comments: rules for comments in code, write and review modes.
-- deslop: rules against AI slop in technical writing, English and French, write and review modes.
-- open-question: format of the `## Open Questions & Gaps` section.
-- relevant-oq: sorts a doubt into `ask`, `decide` or nothing before it is written.
-- schematic: ASCII schematics in markdown, 80 columns.
+Agents and role skills name every skill `rb-compound:<skill>`. An agent or a skill of the same name in the user's own folders is listed beside the plugin's and keeps the bare name.
 
-A skill of the same name in the user's own skills folder is listed beside the plugin's and keeps the bare name.
+## bulker
+
+`bulker` is built into `skills/bulkman-method/scripts/` from its sources in `bulker/`, see `bulker/README.md`. `rb-compound:bulkman` runs it with `node`, never a `bulker` from the PATH, with nothing to install. It needs Node 20.11 or later: with an older Node or none, bulkman names the version found and runs nothing.
 
 ## Install from GitHub
 
@@ -56,3 +72,5 @@ The manifests carry no `version`: an installed plugin follows the commits of `ma
 ## License
 
 PolyForm Noncommercial 1.0.0, see `LICENSE`. The source is available; noncommercial use is free, commercial use requires a paid license from Robusta Build.
+
+`skills/bulkman-method/scripts/masala-parser/` bundles `@masala/parser` 2.0.0 under its own license: its `LICENSE` file, copied as is, is the LGPL 2.1 text, while its `package.json` declares LGPL-3.0.
