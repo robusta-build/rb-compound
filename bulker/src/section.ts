@@ -22,11 +22,13 @@ export interface HeadingScan {
   lines: TextLine[]
 }
 
+/** The number of `#` of a Markdown heading line, 0 when the line is no heading. */
 export function headingLevel(text: string): number {
   const match = /^(#{1,6}) /.exec(text)
   return match ? match[1]!.length : 0
 }
 
+/** The canonical and legacy level-two doubt headings of a text, with all its lines. */
 export function scanHeadings(text: string): HeadingScan {
   const lines = splitLines(text)
   const canonical: TextLine[] = []

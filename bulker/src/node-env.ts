@@ -41,6 +41,7 @@ export interface RunFs extends EditFs {
   readDirEntries(path: string): { name: string; isDirectory: boolean }[]
 }
 
+/** The file system of the running Node process, path operations taken from `sep`. */
 export function nodeFs(sep: typeof nodePath = nodePath): RunFs {
   return {
     readFile: (p) => readFileSync(p, 'utf8'),

@@ -145,7 +145,7 @@ Puis une ligne de proposition, jamais un appel : « Une fois mergée sur la bran
 
 En cas d'arrêt, rien de déjà écrit n'est défait, et rien dans la séquence n'est destructif
 
-Un agent auquel la séquence délègue et que la session ne liste pas (`rb-compound:docman` avant qu'il entre dans le plugin) arrête la séquence à son étape, avant toute écriture de cette étape : la ligne de l'étape lit `stopped: rb-compound:<agent> absent`, les étapes suivantes `not done`.
+Un agent auquel la séquence délègue et que la session ne liste pas arrête la séquence à son étape, avant toute écriture de cette étape : la ligne de l'étape lit `stopped: rb-compound:<agent> absent`, les étapes suivantes `not done`.
 
 A la fin, on donne un compte-rendu : une ligne par étape, dans l'ordre, chacune nommant l'étape, ce qui a été écrit ou quel agent a été appelé, et exactement une issue parmi `done`, `already done`, `not applicable`, `stopped`. Les étapes qui suivent un arrêt lisent `not done` et sont nommées une par une, jamais résumées en « le reste ». Pas de tableau. La dernière ligne est le message de commit proposé.
 

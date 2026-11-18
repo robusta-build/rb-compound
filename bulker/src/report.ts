@@ -34,6 +34,7 @@ export function renderReport(report: Report, dryRun: boolean): string {
   return lines.join('\n')
 }
 
+/** A report with nothing applied, refused or warned, exit code 0: the base every run spreads its outcome over. */
 export function emptyReport(phase: Report['phase'], target: string): Report {
   return {
     version: 2,

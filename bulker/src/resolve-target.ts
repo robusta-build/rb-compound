@@ -66,6 +66,7 @@ function comparable(env: TargetEnv, p: string): string {
   return env.caseInsensitive ? normalised.toLowerCase() : normalised
 }
 
+/** True when the candidate is the root itself or lies under it, compared with the platform's separator and case rule. */
 export function isWithin(env: TargetEnv, root: string, candidate: string): boolean {
   const a = comparable(env, root).replace(new RegExp(`\\${env.path.sep}+$`), '')
   const b = comparable(env, candidate).replace(new RegExp(`\\${env.path.sep}+$`), '')

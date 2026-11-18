@@ -50,6 +50,7 @@ export function detectEol(text: string): string {
   return crlf > lf ? '\r\n' : '\n'
 }
 
+/** True when the text opens with a byte order mark. */
 export function hasBom(text: string): boolean {
   return text.startsWith(BOM)
 }

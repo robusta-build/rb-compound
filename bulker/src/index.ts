@@ -1,17 +1,17 @@
 /**
  * Package bulker — the bulk round trip: gather Open Questions & Gaps into <epic>.bulk.md, copy filled Resolutions back into their sources.
  *
- * Design: features/__done/better-bulkman/better-bulkman.design.md
+ * Design: better-bulkman
  * Requirements: R-BULKER-01, R-BULKER-02, R-BULKER-03, R-BULKER-04, R-BULKER-05, R-BULKER-06, R-BULKER-21, R-BULKER-22, R-BULKER-23, R-BULKER-24, R-BULKER-25, R-BULKER-41, R-BULKER-42, R-BULKER-43, R-BULKER-44, R-BULKER-45, R-BULKER-61, R-BULKER-65, R-BULKER-66, R-BULKER-67, R-BULKER-81, R-BULKER-82, R-BULKER-83
- * Design: features/__done/bulk-resolve-copy/bulk-resolve-copy.design.md
+ * Design: bulk-resolve-copy
  * Requirements: R-BULKRESOLVE-01, R-BULKRESOLVE-02, R-BULKRESOLVE-03, R-BULKRESOLVE-04, R-BULKRESOLVE-21, R-BULKRESOLVE-22, R-BULKRESOLVE-23, R-BULKRESOLVE-24, R-BULKRESOLVE-41, R-BULKRESOLVE-42, R-BULKRESOLVE-43, R-BULKRESOLVE-81, R-BULKRESOLVE-82, R-BULKRESOLVE-83
- * Design: features/__done/open-question-epic/__done/bulk-oq-flow/bulk-oq-flow.design.md
+ * Design: bulk-oq-flow
  * Requirements: R-BULKFLOW-01, R-BULKFLOW-02, R-BULKFLOW-03, R-BULKFLOW-04, R-BULKFLOW-05, R-BULKFLOW-06, R-BULKFLOW-07, R-BULKFLOW-08, R-BULKFLOW-09, R-BULKFLOW-10
- * Design: features/worktree-epic/__done/chore-ignore/chore-ignore.design.md
+ * Design: chore-ignore
  * Requirements: R-CHOREIGNORE-01, R-CHOREIGNORE-21
- * Design: features/compound-plugins-epic/business-rules-out/business-rules-out.design.md
+ * Design: business-rules-out
  * Requirements: R-RULESOUT-41, R-RULESOUT-42, R-RULESOUT-43, R-RULESOUT-44, R-RULESOUT-45, R-RULESOUT-46
- * Design: features/compound-plugins-epic/role-skills-plan/role-skills-plan.design.md
+ * Design: role-skills-plan
  * Requirements: R-ROLEPLAN-61, R-ROLEPLAN-62, R-ROLEPLAN-63, R-ROLEPLAN-64
  */
 export { applyEdits, type ApplyOptions, type EditFs } from './apply-edits.js'
