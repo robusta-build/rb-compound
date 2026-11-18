@@ -2,6 +2,10 @@
 description: Load the purpose of this project and the Compound routine, then run nxt.
 ---
 
+<!--
+Package start — the command /rb-compound:start: the project's purpose, then the Compound routine and nxt.
+-->
+
 Load the context of this project without reading too much. Write nothing, and read no file outside this project and the rb-compound plugin.
 
 1. Read, with the Read tool, one call per file, at the root of the working directory: `README.md`, `ubiquitous-language.md` and `root.archi.md`. No other `*.archi.md`.

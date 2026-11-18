@@ -1,6 +1,6 @@
 # rb-compound
 
-Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its planning agents and its skills. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`. The plugin has no hook or command.
+Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its planning agents, its skills and the `/rb-compound:start` command. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`. The plugin has no hook.
 
 ## Agents
 
@@ -15,6 +15,9 @@ An agent file holds only its header; its method is its role skill, loaded with t
 
 ## Skills
 
+- compound-routine: the Compound routine, `nxt`, pmf mode, the boss exception for commits and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. Loaded on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
+  - `references/ubiquitous-language.md`: the Compound glossary.
+  - `references/progress.md`: the grammar of a design's `## Progress` block, written by the main agent during implementation.
 - Role skills: `rb-compound:<agent>-method`, the method of each agent, with its template under `assets/` or its script under `scripts/`. A request for an agent launches the agent, never its role skill inline.
 - brainstorm: the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`. `rb-compound:bsman` is its autonomous variant.
 - Shared skills, which name each other by short name:
@@ -27,6 +30,10 @@ An agent file holds only its header; its method is its role skill, loaded with t
   - schematic: ASCII schematics in markdown, 80 columns.
 
 Agents and role skills name every skill `rb-compound:<skill>`. An agent or a skill of the same name in the user's own folders is listed beside the plugin's and keeps the bare name.
+
+## Command
+
+`/rb-compound:start` reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the project, loads `rb-compound:compound-routine`, then runs `nxt`. A missing file is named on one line and not created.
 
 ## bulker
 
