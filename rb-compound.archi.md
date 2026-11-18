@@ -109,7 +109,7 @@ Client code: the user, the session, and the agents and command of the plugin.
 
 - `/rb-compound:brainstorm` — interactive, from a story's Acceptance Criteria to `<feature>.brainstorm.md`.
 - `rb-compound:<agent>-method` — loaded only by its agent; its description routes a request to the agent, never applied inline. Its files are read as `${CLAUDE_SKILL_DIR}/<path>`, fallback `${CLAUDE_PLUGIN_ROOT}/skills/<agent>-method/<path>`.
-- `rb-compound:compound-routine` — injected into the session context by the hook of package `hooks`; without the hook, loaded by its description. Its rules apply on an explicit Compound signal only (`nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document). `/rb-compound:start` loads it.
+- `rb-compound:compound-routine` — injected into the session context by the hook of package `hooks`; without the hook, loaded by its description. Its rules apply on an explicit Compound signal only (`nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document). `/rb-compound:start` loads it when the hook did not inject it.
   - `nxt` writes nothing and prints 1 to 3 options `<n>. <item> — <stage> — <single next action>`.
   - `boss <target>` outside `rb-compound:boss` prints `boss <target> runs in its own session: claude --agent rb-compound:boss "boss <target>"` and launches nothing.
   - Read paths: `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/ubiquitous-language.md` and `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/progress.md`; a role skill reads them first at `${CLAUDE_SKILL_DIR}/../compound-routine/references/<file>`.
@@ -128,7 +128,7 @@ claude --plugin-dir <path-to-checkout>
 claude --agent rb-compound:boss "<request>"
 ```
 
-- `/rb-compound:start`, no argument: reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the working directory, loads `rb-compound:compound-routine`, runs `nxt`. Stdout: the project's purpose in at most 3 lines, one line `<file>: absent` per missing file, then the `nxt` output. Writes nothing, creates no missing file.
+- `/rb-compound:start`, no argument: reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the working directory, loads `rb-compound:compound-routine` once, only when the context does not hold the header line of package `hooks`, runs `nxt`. Stdout: the project's purpose in at most 3 lines, one line `<file>: absent` per missing file, then the `nxt` output. Writes nothing, creates no missing file.
 - `/rb-compound:commit`: commits the files of the current task, `type(scope): description`, no AI attribution, no emoji; a build or test known broken stops it.
 - `claude --agent rb-compound:boss "<request>"`: boss as the session agent; in any other session, `compound-routine` §boss hands the request over. Requests, in the launch message or later in the session:
 
