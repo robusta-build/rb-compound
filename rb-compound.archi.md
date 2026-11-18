@@ -5,16 +5,20 @@
 
 ## Overview
 
-`rb-compound` is Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin. The repository is both the plugin `rb-compound` (`.claude-plugin/plugin.json`) and the marketplace `robusta-build` (`.claude-plugin/marketplace.json`). It ships the four planning agents epicman, storyman, bsman and bulkman, each a header loading its role skill, the interactive skill `brainstorm`, the routine skill `compound-routine`, seven shared skills, the command `/rb-compound:start`, and the module `bulker`, the sources of the command bundled in `skills/bulkman-method/scripts/`. It has no hook. The other Compound agents (designman, tddman, codeman, docman, archiman, doneman, boss, fixman, wkman) are not in it.
+`rb-compound` is Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin. The repository is both the plugin `rb-compound` (`.claude-plugin/plugin.json`) and the marketplace `robusta-build` (`.claude-plugin/marketplace.json`). It ships eight agents, each a header loading its role skill: the planning agents epicman, storyman, bsman and bulkman, the design agent designman, the implementation agents tddman and codeman, and the bug capture agent fixman. It also ships the interactive skill `brainstorm`, the routine skill `compound-routine`, seven shared skills, the command `/rb-compound:start`, and the module `bulker`, the sources of the command bundled in `skills/bulkman-method/scripts/`. It has no hook. The other Compound agents (docman, archiman, doneman, boss, wkman) are not in it.
 
 ## Apps, modules, packages
 
 - app `rb-compound` — the plugin and its marketplace, read in place from the checkout; the manifests carry no `version`
-- package `agents` — `agents/{epicman,storyman,bsman,bulkman}.md`, header only: `skills:` naming the role skill alone, `model: sonnet`, `effort: medium`, `tools`, and one line loading the role skill with the Skill tool
+- package `agents` — `agents/{epicman,storyman,bsman,bulkman,designman,tddman,codeman,fixman}.md`, header only: `skills:` naming the role skill alone, `model: sonnet` and `effort: medium` (designman: `opus`, `high`), `tools` (absent for tddman and codeman, which inherit every tool), and one line loading the role skill with the Skill tool
 - package `epicman-method` — epicman's method, writes `<epic>.epic.md` from `assets/epic.template.md`; reads the Definition of Done in `storyman-method` §done
 - package `storyman-method` — storyman's method, writes `<feature>.story.md` from `assets/story.template.md`; `submit` and `done` delegate to other agents
 - package `bsman-method` — bsman's method, the autonomous brainstorm into `<feature>.brainstorm.md`
 - package `bulkman-method` — bulkman's method and `scripts/`: `bulker.mjs` and `masala-parser/`, the build output of module `bulker`, committed
+- package `designman-method` — designman's method, writes `<feature>.design.md` in DRAFT from `assets/design.template.md`; `references/bulk.md`, the bulk contract, read only when the epic has a bulk
+- package `tddman-method` — tddman's method, implements an APPROVED design test-first, from its Boundaries
+- package `codeman-method` — codeman's method, implements code first, tests only where they pay
+- package `fixman-method` — fixman's method, captures a bug into `<owner>.fix.md`, or reopens an entry
 - package `brainstorm` — the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`
 - package `compound-routine` — the Compound routine, `nxt`, pmf, the boss hand-over and commit exception, and the routine words, loaded on an explicit Compound call only; `references/ubiquitous-language.md`, the Compound glossary, and `references/progress.md`, the grammar of a design's `## Progress` block
 - package `start` — `commands/start.md`, the command `/rb-compound:start`
@@ -32,24 +36,27 @@
 ```
   Arrow = loads, from client code to the skill it uses.
 
-  package `agents`
-  (epicman, storyman, bsman, bulkman)
+  package `agents` (epicman, storyman, bsman, bulkman,
+  designman, tddman, codeman, fixman)
       │
       │ skill, rb-compound:<agent>-method
       ↓
   packages `epicman-method`, `storyman-method`,       package `brainstorm`
-  `bsman-method`, `bulkman-method`                          │
+  `bsman-method`, `bulkman-method`,                         │
+  `designman-method`, `tddman-method`,                      │
+  `codeman-method`, `fixman-method`                         │
       │                                                     │
       │ skill                                               │ skill
       ↓                                                     ↓
   packages `open-question`, `relevant-oq`, `boundaries`, `schematic`,
-  `checker`
+  `checker`, `code-comments`
 
   package `start` ──skill──→ package `compound-routine`
 ```
 
-- `code-comments` and `deslop` are loaded by no shipped agent.
+- `deslop` is loaded by no shipped agent.
 - `compound-routine` loads no other package: it names the agents `rb-compound:<agent>` as routing.
+- `designman-method`, `tddman-method`, `codeman-method` and `fixman-method` read the `references/` files of `compound-routine` with Read, and never load it as a skill.
 - `bulkman-method` runs its own `scripts/bulker.mjs` with `node`; `bulker/` builds it.
 
 ## Boundaries
@@ -65,10 +72,16 @@ rb-compound:storyman update <epic> [Bn] [avec brainstorms]
 rb-compound:storyman submit <feature> | done <feature>
 rb-compound:bsman <feature>
 rb-compound:bulkman <epic> | resolve <epic>
+rb-compound:designman <story> | update <feature> : <event>
+rb-compound:tddman LFG | LFG fast
+rb-compound:codeman LFG | LFG fast
+rb-compound:fixman [capture] <bug description | path | feature | epic>
+rb-compound:fixman reopen <target> : <FIX-INFIX-n> : <why>
 ```
 
-- Outputs: `<epic>.epic.md`, `<feature>.story.md`, `<feature>.brainstorm.md`, `<epic>.bulk.md` and the `Resolution:` lines copied back into their sources.
+- Outputs: `<epic>.epic.md`, `<feature>.story.md`, `<feature>.brainstorm.md`, `<epic>.bulk.md` and the `Resolution:` lines copied back into their sources, `<feature>.design.md` in DRAFT, the code and tests of an APPROVED design, `<owner>.fix.md` and the `Fixed:` line of its entries.
 - `storyman update <epic>` launches `rb-compound:storyman` per story; `submit` launches `rb-compound:docman`, `rb-compound:archiman` and `rb-compound:epicman`, `done` launches `rb-compound:doneman`. An agent the session does not list stops the sequence at its step: `submit` stops at its first step.
+- tddman and codeman never write the design doc: their final report hands the `## Progress` counts to the main agent.
 - A subagent without the Agent tool returns the launch lines to its caller.
 
 ### skill API of app `rb-compound`
@@ -80,7 +93,7 @@ Client code: the user, the session, and the agents and command of the plugin.
 - `rb-compound:compound-routine` — loaded by the session on an explicit Compound signal only (`nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document), and by `/rb-compound:start`.
   - `nxt` writes nothing and prints 1 to 3 options `<n>. <item> — <stage> — <single next action>`.
   - `boss <target>` outside `rb-compound:boss` prints `boss <target> runs in its own session: claude --agent rb-compound:boss "boss <target>"` and launches nothing.
-  - Read paths, fixed: `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/ubiquitous-language.md` and `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/progress.md`.
+  - Read paths: `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/ubiquitous-language.md` and `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/progress.md`; a role skill reads them first at `${CLAUDE_SKILL_DIR}/../compound-routine/references/<file>`.
 - `rb-compound:<skill>` for `boundaries`, `checker`, `code-comments`, `deslop`, `open-question`, `relevant-oq`, `schematic`; agents and role skills name them in full, shared skills name each other by short name.
 
 ### CLI API of app `rb-compound`
@@ -113,6 +126,6 @@ node scripts/bulker.mjs --help | --version
 
 ## Dependencies
 
-- Depends on: Claude Code (plugin loading, Skill and Agent tools, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`); Node 20.11 or later for `bulker.mjs`; module `bulker` (build output); `@masala/parser` 2.0.0, bundled under its own license; agents `rb-compound:designman`, `rb-compound:tddman`, `rb-compound:codeman`, `rb-compound:docman`, `rb-compound:archiman`, `rb-compound:doneman`, `rb-compound:boss`, `rb-compound:fixman`, `rb-compound:wkman`, named by the role skills and `compound-routine` and absent from the plugin.
-- Module `bulker` depends on: `@masala/parser` 2.0.0 (runtime); TypeScript, Vite and Vitest (build and tests).
+- Depends on: Claude Code (plugin loading, Skill and Agent tools, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`); Node 20.11 or later for `bulker.mjs`; module `bulker` (build output); `@masala/parser` 2.0.0, bundled under its own license; agents `rb-compound:docman`, `rb-compound:archiman`, `rb-compound:doneman`, `rb-compound:boss`, `rb-compound:wkman`, named by the role skills and `compound-routine` and absent from the plugin.
+- Module `bulker` depends on: `@masala/parser` 2.0.0 (runtime); TypeScript, `@types/node`, Vite and Vitest (build and tests).
 - Used by: Claude Code sessions that install `rb-compound@robusta-build`.

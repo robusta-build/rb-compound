@@ -1,15 +1,19 @@
 # rb-compound
 
-Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its planning agents, its skills and the `/rb-compound:start` command. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`. The plugin has no hook.
+Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its agents, its skills and the `/rb-compound:start` command. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`. The plugin has no hook.
 
 ## Agents
 
-Four agents, launched as `rb-compound:<agent>`, each on `sonnet` with effort `medium`:
+Eight agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `medium` except designman, on `opus` with effort `high`:
 
 - epicman: writes and maintains `<epic>.epic.md`; `epicman <epic>`, `epicman update <epic> : <event>`, `epicman done <epic>`.
 - storyman: writes and maintains `<feature>.story.md`; `storyman <feature>`, `storyman update <feature>`, `storyman update <epic> [Bn]`, `storyman submit <feature>`, `storyman done <feature>`.
 - bsman: autonomous brainstorm of a story into `<feature>.brainstorm.md`.
 - bulkman: runs `bulker`; `bulkman <epic>` gathers the epic's Open Questions & Gaps into `<epic>.bulk.md`, `bulkman resolve <epic>` copies the filled Resolutions back to their documents.
+- designman: writes `<feature>.design.md` in DRAFT from the story and its brainstorm; `designman <story>`, `designman update <feature> : <event>`.
+- tddman: implements a design test-first; `LFG`, or `LFG fast` without the test review pause.
+- codeman: implements code first, tests only where they pay; `LFG`, or `LFG fast` without the review pause.
+- fixman: captures a bug into `<owner>.fix.md`; `fixman <bug>`, `fixman reopen <target> : <FIX-INFIX-n> : <why>`.
 
 An agent file holds only its header; its method is its role skill, loaded with the Skill tool. `storyman submit` and `storyman done` launch `rb-compound:docman`, `archiman` and `doneman`, which the plugin does not ship; `submit` stops at its first step.
 
@@ -18,7 +22,7 @@ An agent file holds only its header; its method is its role skill, loaded with t
 - compound-routine: the Compound routine, `nxt`, pmf mode, the boss exception for commits and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. Loaded on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
   - `references/ubiquitous-language.md`: the Compound glossary.
   - `references/progress.md`: the grammar of a design's `## Progress` block, written by the main agent during implementation.
-- Role skills: `rb-compound:<agent>-method`, the method of each agent, with its template under `assets/` or its script under `scripts/`. A request for an agent launches the agent, never its role skill inline.
+- Role skills: `rb-compound:<agent>-method`, the method of each agent; its templates sit under `assets/`, its scripts under `scripts/`, its references under `references/`. A request for an agent launches the agent, never its role skill inline.
 - brainstorm: the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`. `rb-compound:bsman` is its autonomous variant.
 - Shared skills, which name each other by short name:
   - boundaries: names the boundaries between apps, modules and packages, and shows each API as types, interfaces and client code.
