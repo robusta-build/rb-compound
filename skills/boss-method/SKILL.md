@@ -148,7 +148,7 @@ In rloq only, a pending `ask` entry stops its story at design DRAFT. A `rb-compo
 3. The expected branch is `epic/<epic>` for a story of an epic, `feat/<story>` for a story outside any epic.
 4. Read the current branch (`git rev-parse --abbrev-ref HEAD`):
    - the expected branch: stay there, it is a resume or the user prepared it;
-   - `main`, `master` or `develop`: switch to the expected branch, created from HEAD when missing (`git switch -c`). Never `git checkout -B`, which resets an existing branch;
+   - `main`, `master` or `develop`: switch to the expected branch when it exists. A missing one is never created: stop with `boss stopped: <expected branch> does not exist; create it, then relaunch.` and write nothing. Creating a branch is the user's call;
    - any other branch: refuse with `boss refused: on <branch>, expected <expected branch>.` and write nothing.
 5. A dirty working tree is fine: boss stages by explicit path and never stashes. A switch that fails on a conflict stops the run.
 6. In a linked worktree opened by `wk` (`rb-compound:wkman-method`), the same rules apply.
