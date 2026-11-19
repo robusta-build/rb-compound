@@ -2,6 +2,8 @@
 
 Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its agents, its skills, the `/rb-compound:start` command and a `SessionStart` hook. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`.
 
+The plugin is written in English. Stories and epics follow the project language, French or English; designs are always English. `skills/compound-routine/references/headers.md` maps the two marker series.
+
 ## Agents
 
 Thirteen agents, launched as `rb-compound:<agent>`, on `sonnet` with effort `medium` except designman and boss, on `opus` with effort `high`, and docman, on `haiku` with effort `low`:
@@ -48,6 +50,7 @@ pmf:
 - compound-routine: the Compound routine, `nxt`, pmf mode, the boss hand-over and its exception for commits, and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. The hook injects it into every main session, `claude --agent` included; a subagent does not receive it. Its rules apply on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
   - `references/ubiquitous-language.md`: the Compound glossary.
   - `references/progress.md`: the grammar of a design's `## Progress` block, written by the main agent during implementation.
+  - `references/headers.md`: the French and English marker series, and how the language of a project is read.
 - Role skills: `rb-compound:<agent>-method`, the method of each agent; its templates sit under `assets/`, its scripts under `scripts/`, its references under `references/`. A request for an agent launches the agent, never its role skill inline.
 - brainstorm: the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`. `rb-compound:bsman` is its autonomous variant.
 - commit: the commit convention `type(scope): description` and the precommit checklist, typed `/rb-compound:commit` by the user and loaded by boss before its first commit. Its description has Claude load it before any git commit, in every session where the plugin is installed.

@@ -1,6 +1,6 @@
 # Architecture: rb-compound
 
-**Last updated:** 2026-11-18
+**Last updated:** 2026-11-19
 **Kind:** app
 
 ## Overview
@@ -25,7 +25,7 @@
 - package `wkman-method` — wkman's method, opens, resumes or closes the worktree of `feat/<feature>` or `epic/<epic>` through herdr or git, then runs `features/__chore/setup.sh|ps1`
 - package `boss-method` — boss's method, runs the routine on a named feature or epic up to submit, one commit per step, and pmf, which commits on the current branch and pushes it; `references/prepare.md`, read for `boss prepare` only, and `references/roadmap.md`, read for `boss roadmap` only, which keeps `roadmap.yaml`
 - package `brainstorm` — the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`
-- package `compound-routine` — the Compound routine, `nxt`, pmf, the boss hand-over and commit exception, and the routine words, injected into the session by package `hooks`, its rules applied on an explicit Compound call only; `references/ubiquitous-language.md`, the Compound glossary, and `references/progress.md`, the grammar of a design's `## Progress` block
+- package `compound-routine` — the Compound routine, `nxt`, pmf, the boss hand-over and commit exception, and the routine words, injected into the session by package `hooks`, its rules applied on an explicit Compound call only; `references/ubiquitous-language.md`, the Compound glossary, `references/progress.md`, the grammar of a design's `## Progress` block, and `references/headers.md`, the French and English series of document headers
 - package `start` — `commands/start.md`, the command `/rb-compound:start`
 - package `hooks` — `hooks/hooks.json`, the `SessionStart` registration at startup, `/clear` and compaction, and `hooks/session-start.mjs`, which prints the body of `compound-routine` into the session context
 - package `boundaries` — notation of the APIs a document crosses, and its overview figure
@@ -67,6 +67,7 @@
 
 - `compound-routine` loads no other package: it names the agents `rb-compound:<agent>` as routing.
 - `designman-method`, `tddman-method`, `codeman-method`, `fixman-method` and `boss-method` read the `references/` files of `compound-routine` with Read, and never load it as a skill.
+- `references/headers.md` is read by `storyman-method`, `epicman-method`, `bsman-method`, `brainstorm`, `designman-method` (`references/bulk.md`), `bulkman-method`, `fixman-method`, `docman-method`, `doneman-method` and `boss-method`.
 - `boss-method` loads `relevant-oq` and `commit`; agent `boss` launches storyman, bsman, designman, tddman, codeman, epicman, docman and archiman with the Agent tool, and no other agent.
 - `tddman-method`, `codeman-method` and `checker` name `/rb-compound:commit` to the user and never load it.
 - `bulkman-method` runs its own `scripts/bulker.mjs` with `node`; `bulker/` builds it.
