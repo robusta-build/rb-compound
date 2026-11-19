@@ -33,12 +33,16 @@ Epic: optional. Its stories go in batches `B-<INFIX>-n`, said `Bn`. A long epic 
 
 Fix cycle, for a delivered bug: `rb-compound:fixman` captures the entry in `<owner>.fix.md`; the user arbitrates there; `rb-compound:tddman` or `rb-compound:codeman` implements and stamps `Fixed:` once tests pass; the main agent runs `rb-compound:docman` and `rb-compound:archiman` on the doc lines reported stale and proposes one commit.
 
+## Agents
+
+First-level agents: `rb-compound:boss`, `rb-compound:epicman`, `rb-compound:storyman`, `rb-compound:bsman`, `rb-compound:designman`, `rb-compound:tddman`, `rb-compound:docman`. Named with or without the `rb-compound:` prefix, each launches its agent with the request as typed. Any Compound agent runs under its `rb-compound:` type, never `general-purpose` nor inline.
+
 ## boss
 
-`boss <target>`, `boss atw <target>` and `boss prepare <target>`, typed in a session that is not `rb-compound:boss`, are handed over with this line, nothing else: no pipeline step, no agent launched in its place, even when `rb-compound:boss` is not installed.
+`boss <target>`, `boss atw <target>` and `boss prepare <target>` launch `rb-compound:boss` in the background, then report its result and the cause of an early stop. Or `rb-compound:boss` runs as the main agent of its own session:
 
 ```
-boss <target> runs in its own session: claude --agent rb-compound:boss "boss <target>"
+claude --agent rb-compound:boss "boss <target>"
 ```
 
 rloq is the default of `rb-compound:boss`; `atw` makes it decide the `ask` entries itself, signed `lgtm (boss atw)`.
@@ -47,20 +51,20 @@ Commits: a request `boss <target>` is the user's explicit request for the commit
 
 ## pmf
 
-On from `pmf on` to `pmf off`, never inferred: off until `pmf on` is typed. In pmf, `rb-compound:boss` works from the epic files only, with `rb-compound:epicman` and `rb-compound:tddman`, skipping `rb-compound:bsman`, the brainstorm, `rb-compound:designman`, design docs, `rb-compound:docman` and `rb-compound:archiman`. Epic files stay updated. It commits on the current branch and pushes it, never forced, switching and merging nothing. It picks the next epic itself and skips a blocked one. Without `pmf on`, `rb-compound:boss` never pushes.
+On from `pmf on` to `pmf off`, never inferred. In pmf, `rb-compound:boss` works from the epic files only, with `rb-compound:epicman` and `rb-compound:tddman`, skipping `rb-compound:bsman`, the brainstorm, `rb-compound:designman`, design docs, `rb-compound:docman` and `rb-compound:archiman`. Epic files stay updated. It commits on the current branch and pushes it, never forced, switching and merging nothing. It picks the next epic itself and skips a blocked one. Without `pmf on`, `rb-compound:boss` never pushes.
 
 ## nxt
 
 `nxt` writes nothing. It reads only `features/`, skipping `__done/`, `__future/` and `__chore/`: the first `**Status:**` line of each story and design, the `À faire`/`To do` section of each epic, the Resolutions of the Open Questions sections, the fix documents; and git: the session's modified files, last commits, the branches merged into the integration branch.
 
-Current story: from the session's modified files, else the last commits. A finished task gets the commit; otherwise the routine's next step, or what stopped the work: an answered entry, a blocker, the context in one sentence.
+Current story: from the session's modified files, else the last commits. A finished task gets the commit; otherwise the next step, or what stopped the work, in one sentence.
 
 - A filled Resolution not yet folded: option 1 is its integration, before any run of `rb-compound:boss`: `rb-compound:storyman update`, `rb-compound:epicman update` or `rb-compound:designman update` on its document; for a bulk, `rb-compound:bulkman resolve <epic>` then `rb-compound:storyman update <epic> [Bn]`.
 - A SUBMITTED story whose branch is not merged: one option is always push and merge, by the user, and ends there: QA first, done is the user's call. No option names `rb-compound:storyman done`, even after the merge.
-- A finished epic: the next one, read from the epics and git.
+- A finished epic: the next one.
 - No `features/`: print the line `No Compound work is open here.` word for word, then one option, writing a story with `rb-compound:storyman`.
 
-Options, usually in this order: a run of `rb-compound:boss` to finish the story or batch, the next action of the routine, a cleanup or a pending fix. Output, 1 to 3 options, one may end with `(recommended)`:
+Options, in this order: `rb-compound:boss` to finish the story or batch, the routine's next action, a cleanup or a pending fix; 1 to 3, one may end with `(recommended)`:
 
 ```
 <one line recalling where the work stands, optional>
