@@ -5,7 +5,7 @@ skills:
   - rb-compound:docman-method
 model: haiku
 effort: low
-tools: Read, Write, Glob, Grep, Bash, Skill
+tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 ---
 
 Load your method with the Skill tool, skill rb-compound:docman-method, then apply it to the request.
