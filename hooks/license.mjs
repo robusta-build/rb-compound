@@ -1,7 +1,7 @@
 /**
  * Package hooks, license reading — the license number of the plugin option and the occasional free-version reminder.
  *
- * Design: ./features/compound-plugins-epic/license-key/license-key.design.md
+ * Design: license-key
  * Requirements: R-LICENSEKEY-21, R-LICENSEKEY-22, R-LICENSEKEY-23, R-LICENSEKEY-24, R-LICENSEKEY-41, R-LICENSEKEY-42, R-LICENSEKEY-44, R-LICENSEKEY-46
  */
 

@@ -4,7 +4,7 @@
  * Design: session-hook
  * Requirements: R-SESSIONHOOK-21, R-SESSIONHOOK-22, R-SESSIONHOOK-23, R-SESSIONHOOK-24, R-SESSIONHOOK-25
  *
- * Design: ./features/compound-plugins-epic/license-key/license-key.design.md
+ * Design: license-key
  * Requirements: R-LICENSEKEY-43, R-LICENSEKEY-45, R-LICENSEKEY-46
  */
 import { readFileSync } from 'node:fs';
