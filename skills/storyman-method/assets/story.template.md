@@ -1,61 +1,63 @@
 # Template — story
 
-Propriétaire : `rb-compound:storyman`. L'agent lit ce fichier à chaque écriture et ne le recopie jamais.
+Owner: `rb-compound:storyman`. The agent reads this file at every write and never copies it.
 
-- Obligatoires : Story, Contexte & objectif, Boundaries, Acceptance Criteria (ACTIVE) ou Livré (SUBMITTED). Avant d'écrire, l'agent vérifie qu'aucune ne manque ; une section obligatoire absente d'un document existant est recréée, jamais laissée manquante.
-- Optionnelles : les autres. Omises quand elles n'apportent rien, jamais laissées vides.
-- L'ordre des sections est celui du template. Aucune section hors template sauf nécessité réelle.
-- La section métier optionnelle survit au submit si elle reste vraie. Une story LANDED se lit SUBMITTED. `rb-compound:storyman done` ne change que la ligne Status (`DONE (AAAA-MM-JJ, commit abc1234 sur <branche>)`).
+- Mandatory: Story, Context & goal, Boundaries, Acceptance Criteria (ACTIVE) or Delivered (SUBMITTED). Before writing, the agent checks that none is missing; a mandatory section missing from an existing document is recreated, never left missing.
+- Optional: the others. Omitted when they bring nothing, never left empty.
+- The order of the sections is the template's. No section outside the template unless truly necessary.
+- The optional business section survives submit if it stays true. A LANDED story reads SUBMITTED. `rb-compound:storyman done` changes only the Status line (`DONE (YYYY-MM-DD, commit abc1234 on <branch>)`).
+
+The headers below are the English series. In a French project each header and label is written through the French series of `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md`.
 
 ## ACTIVE
 
 ```markdown
-# Story : <Titre court et parlant>
+# Story : <Short, telling title>
 
-**Dernière mise à jour :** AAAA-MM-JJ
+**Last update :** YYYY-MM-DD
 **Feature :** <feature-slug>
-**Infix :** <l'infix de la story — dérive-le lisible du nom de la feature ; il préfixera les R-/AC- du design file. Règles dures : 5 lettres min, 15 max, identifiable par un humain, jamais des initiales (RP interdit, REGPROVISION correct).>
+**Infix :** <the story's infix — derive it readably from the feature name; it will prefix the R-/AC- of the design file. Hard rules: 5 letters min, 15 max, identifiable by a human, never initials (RP forbidden, REGPROVISION correct).>
 **Status :** ACTIVE
 
 ## Story
 
-<En tant que <rôle>, je veux <capacité> afin de <bénéfice>. Si c'est une tâche technique, un énoncé narratif + objectif suffit — ne force pas le format si ça sonne faux.>
+<As a <role>, I want <capability> so that <benefit>. For a technical task, a narrative statement + goal is enough — do not force the format if it sounds wrong.>
 
-## Contexte & objectif
+## Context & goal
 
-<Pourquoi cette story ? Le problème résolu, pour qui, quelle valeur. 2-3 paragraphes courts. Si un blocage majeur existe, une phrase suffit ici.>
+<Why this story? The problem solved, for whom, what value. 2-3 short paragraphs. If a major blocker exists, one sentence is enough here.>
 
-## <Section métier optionnelle>
+## <Optional business section>
 
-<Une seule section propre à la story, si elle apporte vraiment (ex. « Quels services déporter »), en puces courtes. À omettre si rien de tel.>
+<A single section specific to the story, if it really adds something (e.g. "Which services to move out"), in short bullets. Omit if there is nothing of the kind.>
 
 ## Acceptance Criteria
 
-- AC-<INFIX>-1 : Given <contexte>, When <action>, Then <résultat observable>
+- AC-<INFIX>-1 : Given <context>, When <action>, Then <observable result>
 - AC-<INFIX>-2 : …
-- AC-<INFIX>-n : Given les cas limites métier, When on les rejoue, Then <cas 1> ; <cas 2> ; <cas 3>
+- AC-<INFIX>-n : Given the business edge cases, When they are replayed, Then <case 1> ; <case 2> ; <case 3>
 
 ## Boundaries
 
-<Obligatoire. Les blocs de la skill boundaries, zoom complet par défaut. Aucune API touchée → une ligne le dit.>
+<Mandatory. The blocks of the boundaries skill, full zoom by default. No API touched → one line says so.>
 
 ## Open Questions & Gaps
 
-<Quelques vrais arbitrages pour le PO, au format de la skill open-question. À omettre s'il n'y en a pas.>
+<A few real arbitrations for the PO, in the format of the open-question skill. Omit if there are none.>
 
 - OQ-<INFIX>-1 : <question>
-- Proposition : <réponse recommandée>
-- Rationale : <pourquoi, court>
-- Rloq : true
+- Proposition: <recommended answer>
+- Rationale: <why, short>
+- Rloq: true
 - Resolution:
 
 
 ## Documentation updates
 
-<Les lieux de doc à modifier ou créer et pourquoi — jamais la doc elle-même, c'est docman qui rédigera après l'implémentation. À omettre si rien à documenter.>
+<The doc places to modify or create and why — never the doc itself, docman writes it after the implementation. Omit if nothing to document.>
 
-- change <quoi> in <doc/chemin> — why: <raison courte>
-- create <quoi> in <doc/chemin> — why: <raison courte>
+- change <what> in <doc/path> — why: <short reason>
+- create <what> in <doc/path> — why: <short reason>
 
 ## Dependencies
 
@@ -67,51 +69,51 @@ Propriétaire : `rb-compound:storyman`. L'agent lit ce fichier à chaque écritu
 ## SUBMITTED
 
 ```markdown
-# Story : <Titre court et parlant>
+# Story : <Short, telling title>
 
-**Dernière mise à jour :** AAAA-MM-JJ
+**Last update :** YYYY-MM-DD
 **Feature :** <feature-slug>
 **Infix :** <INFIX>
-**Status :** SUBMITTED (AAAA-MM-JJ, commit abc1234)
+**Status :** SUBMITTED (YYYY-MM-DD, commit abc1234)
 
 ## Story
 
-<l'énoncé, inchangé>
+<the statement, unchanged>
 
-## Contexte & objectif
+## Context & goal
 
-<condensé à 2-3 phrases — une fois livré, la justification longue est périmée>
+<condensed to 2-3 sentences — once delivered, the long justification is stale>
 
-## Livré
+## Delivered
 
 ### Requirements
 
-- R-<INFIX>-01 : <une ligne, verbatim du design file>
+- R-<INFIX>-01 : <one line, verbatim from the design file>
 
 ### Acceptance Criteria
 
-- AC-<INFIX>-1 : <une ligne, verbatim de la story>
+- AC-<INFIX>-1 : <one line, verbatim from the story>
 
 ## Boundaries
 
-<Obligatoire. Reprise de la story ACTIVE, avec les vrais noms livrés quand ils sont connus. Peut rester incomplète, jamais absente.>
+<Mandatory. Carried over from the ACTIVE story, with the real delivered names when known. May stay incomplete, never absent.>
 
-## Décisions
+## Decisions
 
-- AAAA-MM-JJ — <décision>. Pourquoi : <rationale courte>.
+- YYYY-MM-DD — <decision>. Why: <short rationale>.
 
 ## Open Questions & Gaps
 
-<seuls les Gaps/OQ encore ouverts ; omise si vide>
+<only the Gaps/OQ still open; omitted if empty>
 
 ## Documentation updates
 
-<au passé une fois livré ; une puce restée à l'impératif = doc encore due (docman). Omise si vide.>
+<in the past tense once delivered; a bullet left in the imperative = doc still due (docman). Omitted if empty.>
 
-- changed <quoi> in <doc>
-- created <quoi> in <doc>
+- changed <what> in <doc>
+- created <what> in <doc>
 
 ## Dependencies
 
-<les dépendances encore vraies au submit, une dépendance levée suffixée « levée » ; omise si aucune>
+<the dependencies still true at submit, a lifted dependency suffixed "lifted"; omitted if none>
 ```

@@ -1,15 +1,15 @@
 # Architecture: rb-compound
 
-**Last updated:** 2026-11-18
+**Last updated:** 2026-11-19
 **Kind:** app
 
 ## Overview
 
-`rb-compound` is Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin. The repository is both the plugin `rb-compound` (`.claude-plugin/plugin.json`) and the marketplace `robusta-build` (`.claude-plugin/marketplace.json`). It ships thirteen agents, each a header loading its role skill: the planning agents epicman, storyman, bsman and bulkman, the design agent designman, the implementation agents tddman and codeman, the bug capture agent fixman, the closing agents docman, archiman and doneman, the worktree agent wkman, and boss, which runs the routine without human validation as the session agent. It also ships the interactive skill `brainstorm`, the routine skill `compound-routine`, eight shared skills, the command `/rb-compound:start`, the `SessionStart` hook of package `hooks`, and the module `bulker`, the sources of the command bundled in `skills/bulkman-method/scripts/`.
+`rb-compound` is Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin. The repository is both the plugin `rb-compound` (`.claude-plugin/plugin.json`) and the marketplace `robusta-build` (`.claude-plugin/marketplace.json`), which lists two plugins: `rb-compound` (source `./`) and `rb-business-rules` (source github `robusta-build/rb-business-rules`, outside this repository). It ships thirteen agents, each a header loading its role skill: the planning agents epicman, storyman, bsman and bulkman, the design agent designman, the implementation agents tddman and codeman, the bug capture agent fixman, the closing agents docman, archiman and doneman, the worktree agent wkman, and boss, which runs the routine without human validation as the session agent. It also ships the interactive skill `brainstorm`, the routine skill `compound-routine`, eight shared skills, the command `/rb-compound:start`, the `SessionStart` hook of package `hooks`, the optional `license_number` option, and the module `bulker`, the sources of the command bundled in `skills/bulkman-method/scripts/`.
 
 ## Apps, modules, packages
 
-- app `rb-compound` — the plugin and its marketplace, read in place from the checkout; the manifests carry no `version`
+- app `rb-compound` — the plugin and its marketplace, read in place from the checkout; the manifests carry no `version`; `plugin.json` declares one `userConfig` option, `license_number`; the marketplace entry `rb-business-rules` points to a github repository, its content is not part of this project
 - package `agents` — `agents/{epicman,storyman,bsman,bulkman,designman,tddman,codeman,fixman,docman,archiman,doneman,wkman,boss}.md`, header only: `skills:` naming the role skill alone, `model: sonnet` and `effort: medium` (designman and boss: `opus`, `high`; docman: `haiku`, `low`), `tools` (absent for tddman and codeman, which inherit every tool; boss's ends with `Agent(...)` naming the eight agents it launches), and one line loading the role skill with the Skill tool
 - package `epicman-method` — epicman's method, writes `<epic>.epic.md` from `assets/epic.template.md`; reads the Definition of Done in `storyman-method` §done
 - package `storyman-method` — storyman's method, writes `<feature>.story.md` from `assets/story.template.md`; `submit` and `done` delegate to other agents
@@ -25,9 +25,9 @@
 - package `wkman-method` — wkman's method, opens, resumes or closes the worktree of `feat/<feature>` or `epic/<epic>` through herdr or git, then runs `features/__chore/setup.sh|ps1`
 - package `boss-method` — boss's method, runs the routine on a named feature or epic up to submit, one commit per step, and pmf, which commits on the current branch and pushes it; `references/prepare.md`, read for `boss prepare` only, and `references/roadmap.md`, read for `boss roadmap` only, which keeps `roadmap.yaml`
 - package `brainstorm` — the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`
-- package `compound-routine` — the Compound routine, `nxt`, pmf, the boss hand-over and commit exception, and the routine words, injected into the session by package `hooks`, its rules applied on an explicit Compound call only; `references/ubiquitous-language.md`, the Compound glossary, and `references/progress.md`, the grammar of a design's `## Progress` block
+- package `compound-routine` — the Compound routine, `nxt`, pmf, the boss hand-over and commit exception, and the routine words, injected into the session by package `hooks`, its rules applied on an explicit Compound call only; `references/ubiquitous-language.md`, the Compound glossary, `references/progress.md`, the grammar of a design's `## Progress` block, and `references/headers.md`, the French and English series of document headers
 - package `start` — `commands/start.md`, the command `/rb-compound:start`
-- package `hooks` — `hooks/hooks.json`, the `SessionStart` registration at startup, `/clear` and compaction, and `hooks/session-start.mjs`, which prints the body of `compound-routine` into the session context
+- package `hooks` — `hooks/hooks.json`, the `SessionStart` registration at startup, `/clear` and compaction, `hooks/session-start.mjs`, which prints the body of `compound-routine` into the session context, and `hooks/license.mjs`, which reads the license number and draws the free-version reminder
 - package `boundaries` — notation of the APIs a document crosses, and its overview figure
 - package `checker` — build, lint and tests before and after coding
 - package `commit` — the commit convention `type(scope): description` and the precommit checklist, also typed as `/rb-compound:commit`
@@ -63,16 +63,19 @@
 
   package `start` ──skill──→ package `compound-routine`
   package `hooks` ──reads SKILL.md──→ package `compound-routine`
+  `hooks/session-start.mjs` ──import()──→ `hooks/license.mjs`
 ```
 
 - `compound-routine` loads no other package: it names the agents `rb-compound:<agent>` as routing.
 - `designman-method`, `tddman-method`, `codeman-method`, `fixman-method` and `boss-method` read the `references/` files of `compound-routine` with Read, and never load it as a skill.
+- `references/headers.md` is read by `storyman-method`, `epicman-method`, `bsman-method`, `brainstorm`, `designman-method` (`references/bulk.md`), `bulkman-method`, `fixman-method`, `docman-method`, `doneman-method` and `boss-method`.
 - `boss-method` loads `relevant-oq` and `commit`; agent `boss` launches storyman, bsman, designman, tddman, codeman, epicman, docman and archiman with the Agent tool, and no other agent.
 - `tddman-method`, `codeman-method` and `checker` name `/rb-compound:commit` to the user and never load it.
 - `bulkman-method` runs its own `scripts/bulker.mjs` with `node`; `bulker/` builds it.
 - `wkman-method` loads no shared skill; it runs `git`, and `herdr` when usable.
 - `doneman-method` names `rb-compound:storyman-method` §done and never loads it.
-- `hooks` reads `skills/compound-routine/SKILL.md` and nothing else; nothing in the plugin depends on `hooks`.
+- `hooks` reads `skills/compound-routine/SKILL.md`, the `SessionStart` stdin and the environment variables `CLAUDE_PLUGIN_ROOT`, `CLAUDE_PLUGIN_OPTION_LICENSE_NUMBER`, `CLAUDE_CODE_ENTRYPOINT` and `CI`; nothing in the plugin depends on `hooks`.
+- `session-start.mjs` loads `./license.mjs` by a guarded dynamic `import()`; a failure of the license path changes neither the exit code, nor stderr, nor `hookSpecificOutput`.
 
 ## Boundaries
 
@@ -120,14 +123,18 @@ Client code: the user, the session, and the agents and command of the plugin.
 Client code: a Claude Code user.
 
 ```
+/plugin configure rb-compound@robusta-build
+claude plugin configure rb-compound@robusta-build --values-stdin
 /plugin marketplace add robusta-build/rb-compound
 /plugin install rb-compound@robusta-build
+/plugin install rb-business-rules@robusta-build
 claude --plugin-dir <path-to-checkout>
 /rb-compound:start
 /rb-compound:commit
 claude --agent rb-compound:boss "<request>"
 ```
 
+- `userConfig.license_number` (`plugin.json`): optional, `sensitive`, no `required`, no `default`; a string `RBC-XXXXX-XXXXX-XXXXX-C`, case, spaces and dashes ignored. Claude Code stores it (Keychain, else its credentials file) and passes it to the hook as `CLAUDE_PLUGIN_OPTION_LICENSE_NUMBER`, from the next session; unset, the variable is absent. The plugin writes no file for it.
 - `/rb-compound:start`, no argument: reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the working directory, loads `rb-compound:compound-routine` once, only when the context does not hold the header line of package `hooks`, runs `nxt`. Stdout: the project's purpose in at most 3 lines, one line `<file>: absent` per missing file, then the `nxt` output. Writes nothing, creates no missing file.
 - `/rb-compound:commit`: commits the files of the current task, `type(scope): description`, no AI attribution, no emoji; a build or test known broken stops it.
 - `claude --agent rb-compound:boss "<request>"`: boss as the session agent; in any other session, `compound-routine` §boss hands the request over. Requests, in the launch message or later in the session:
@@ -154,10 +161,28 @@ SessionStart, matcher startup|clear|compact, timeout 10 s
 node ${CLAUDE_PLUGIN_ROOT}/hooks/session-start.mjs
 ```
 
-- Reads `skills/compound-routine/SKILL.md` under the plugin root, never stdin.
-- Stdout, exit 0: one JSON line `{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"<header>\n<body>"}}`. Header: `rb-compound:compound-routine is loaded below; do not load it again with the Skill tool.` Body: `SKILL.md` without its front matter, read as LF, every `${CLAUDE_PLUGIN_ROOT}` replaced by that variable, or the plugin root when it is unset.
-- Exit 1, stdout empty, one stderr line `rb-compound session-start: <reason>`: `SKILL.md` unreadable, front matter never closed, context above 10,000 characters. Never exit 2.
-- Writes no file, starts no process, sets no variable; imports only `node:` built-ins.
+- Reads `skills/compound-routine/SKILL.md` under the plugin root, and the `SessionStart` input on stdin when it is not a TTY; only `source` is used, a read or parse failure reads as `{}`.
+- Stdout, exit 0: one JSON line `{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"<header>\n<body>"}}`, or `{"systemMessage":"<text>","hookSpecificOutput":{…}}` when a reminder is drawn; `hookSpecificOutput` is the same in both. Header: `rb-compound:compound-routine is loaded below; do not load it again with the Skill tool.` Body: `SKILL.md` without its front matter, read as LF, every `${CLAUDE_PLUGIN_ROOT}` replaced by that variable, or the plugin root when it is unset.
+- Exit 1, stdout empty, one stderr line `rb-compound session-start: <reason>`: `SKILL.md` unreadable, front matter never closed, context above 10,000 characters. Never exit 2. The license path never changes the exit code and writes nothing to stderr.
+- Writes no file, starts no process, sets no variable; `session-start.mjs` imports `node:` built-ins and `./license.mjs`.
+
+### library API of `hooks/license.mjs` in package `hooks`
+
+Client code: `hooks/session-start.mjs`. Imports nothing.
+
+```ts
+type LicenseState =
+  | { kind: "valid" } | { kind: "absent" }
+  | { kind: "refused"; reason: "prefix" | "length" | "character" | "check" };
+REMINDER_ONE_IN = 40
+readLicense(raw: unknown): LicenseState
+isInteractive(env: Env): boolean
+reminderText(state: LicenseState): string
+reminder(stdin: string, env: Env, draw?: () => number): string | undefined
+```
+
+- `reminder` returns a text only when `source` is `startup`, the session is interactive (`CLAUDE_CODE_ENTRYPOINT` not starting with `sdk-`, `CI` unset, `0` or `false`), the number is absent or refused, and `draw() < 1 / REMINDER_ONE_IN`. It never throws.
+- `readLicense` checks, in order: prefix `RBC`, 19 characters, `0-9A-Z`, Luhn mod 36 check character. No expiry, no network; the number is in no output.
 
 ### CLI API of module `bulker`
 
@@ -176,6 +201,6 @@ node scripts/bulker.mjs --help | --version
 
 ## Dependencies
 
-- Depends on: Claude Code (plugin loading, Skill and Agent tools, `SessionStart` hooks, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`); Node 20.11 or later on the `PATH` for `bulker.mjs` and `hooks/session-start.mjs`; module `bulker` (build output); `@masala/parser` 2.0.0, bundled under its own license; `git`, for wkman and the commits of boss, and `herdr` when usable, with its config file, for wkman.
+- Depends on: github `robusta-build/rb-business-rules`, only as the source of the marketplace entry `rb-business-rules`; Claude Code (plugin loading, Skill and Agent tools, `SessionStart` hooks, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`); Node 20.11 or later on the `PATH` for `bulker.mjs` and `hooks/session-start.mjs`; module `bulker` (build output); `@masala/parser` 2.0.0, bundled under its own license; `git`, for wkman and the commits of boss, and `herdr` when usable, with its config file, for wkman.
 - Module `bulker` depends on: `@masala/parser` 2.0.0 (runtime); TypeScript, `@types/node`, Vite and Vitest (build and tests).
 - Used by: Claude Code sessions that install `rb-compound@robusta-build`.

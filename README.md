@@ -1,6 +1,38 @@
 # rb-compound
 
-Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its agents, its skills, the `/rb-compound:start` command and a `SessionStart` hook. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`.
+Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin: its agents, its skills, the `/rb-compound:start` command and a `SessionStart` hook. The repository is both the plugin `rb-compound` and the marketplace `robusta-build`. The plugin is source-available, see License.
+
+The plugin is written in English. Stories and epics follow the project language, French or English; designs are always English. `skills/compound-routine/references/headers.md` maps the two marker series.
+
+## Install
+
+```
+/plugin marketplace add robusta-build/rb-compound
+/plugin install rb-compound@robusta-build
+```
+
+Prerequisite: Node 20.11 or later on the `PATH`, see Compatibility.
+
+The Business Rules plugin of the same marketplace installs on its own:
+
+```
+/plugin install rb-business-rules@robusta-build
+```
+
+One session without installing:
+
+```
+claude --plugin-dir <path-to-checkout>
+```
+
+## First steps
+
+One step each:
+
+- Epic: `epicman <epic>` writes `<epic>.epic.md`.
+- Story: `storyman <feature>` writes `<feature>.story.md`.
+- Design: `designman <story>` writes `<feature>.design.md` in DRAFT. Set its `**Status:**` line to `APPROVED`.
+- Test-first: `rb-compound:tddman` implements the design; `LFG` starts it.
 
 ## Agents
 
@@ -48,9 +80,10 @@ pmf:
 - compound-routine: the Compound routine, `nxt`, pmf mode, the boss hand-over and its exception for commits, and the words `nxt`, `oq`, `rloq`, `atw`, `wk`, `lgtm`, `pmf`. The hook injects it into every main session, `claude --agent` included; a subagent does not receive it. Its rules apply on an explicit call to Compound only: `nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document. Its references:
   - `references/ubiquitous-language.md`: the Compound glossary.
   - `references/progress.md`: the grammar of a design's `## Progress` block, written by the main agent during implementation.
+  - `references/headers.md`: the French and English marker series, and how the language of a project is read.
 - Role skills: `rb-compound:<agent>-method`, the method of each agent; its templates sit under `assets/`, its scripts under `scripts/`, its references under `references/`. A request for an agent launches the agent, never its role skill inline.
 - brainstorm: the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`. `rb-compound:bsman` is its autonomous variant.
-- commit: the commit convention `type(scope): description` and the precommit checklist, typed `/rb-compound:commit` by the user and loaded by boss before its first commit. Its description has Claude load it before any git commit, in every session where the plugin is installed.
+- commit: the commit convention `type(scope): description` and the precommit checklist. The user types `/rb-compound:commit`, boss loads it before its first commit, and Claude loads it when the user asks for a commit.
 - Shared skills, which name each other by short name:
   - boundaries: names the boundaries between apps, modules and packages, and shows each API as types, interfaces and client code.
   - checker: runs build, lint and tests before and after coding.
@@ -68,7 +101,7 @@ Agents and role skills name every skill `rb-compound:<skill>`. An agent or a ski
 
 ## Hook
 
-`hooks/hooks.json` runs `hooks/session-start.mjs` on `SessionStart` at startup, `/clear` and compaction: it prints the body of `compound-routine` into the context. Claude knows the routine and its words from the first request. A session started with `claude --agent rb-compound:<agent>` gets it, a subagent does not, and a resumed or forked session keeps the injection of its origin. The hook writes no file and exports no variable.
+`hooks/hooks.json` runs `hooks/session-start.mjs` on `SessionStart` at startup, `/clear` and compaction: it prints the body of `compound-routine` into the context. Claude knows the routine and its words from the first request. A session started with `claude --agent rb-compound:<agent>` gets it, a subagent does not, and a resumed or forked session keeps the injection of its origin. At `startup` only, in an interactive session without a valid license number, the hook also shows the free-version reminder through `systemMessage`, see License. The hook writes no file, exports no variable and makes no network call.
 
 ## Compatibility
 
@@ -77,24 +110,6 @@ The hook runs `node` without a shell and needs Node 20.11 or later on the `PATH`
 ## bulker
 
 `bulker` is built into `skills/bulkman-method/scripts/` from its sources in `bulker/`, see `bulker/README.md`. `rb-compound:bulkman` runs it with `node`, never a `bulker` from the PATH, with nothing to install. It needs Node 20.11 or later: with an older Node or none, bulkman names the version found and runs nothing.
-
-## Install from GitHub
-
-The repository is private: the machine's git credentials must reach `github.com/robusta-build/rb-compound`.
-
-```
-/plugin marketplace add robusta-build/rb-compound
-/plugin install rb-compound@robusta-build
-```
-
-`marketplace add` fails on a machine with no GitHub SSH key and no stored HTTPS credential. Store a credential with the GitHub CLI:
-
-```
-gh auth login
-gh auth setup-git
-```
-
-or start Claude Code with `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`.
 
 ## Install from a local checkout
 
@@ -105,18 +120,22 @@ claude plugin install rb-compound@robusta-build
 
 The plugin is read in place from the checkout: an edit, committed or not, is loaded at the next session.
 
-One session without installing:
-
-```
-claude --plugin-dir <path-to-checkout>
-```
-
 ## Updates
 
-The manifests carry no `version`: an installed plugin follows the commits of `main`. `/plugin marketplace update robusta-build` fetches them, or auto-update does, turned on per machine in `/plugin` > Marketplaces. The new content loads at the next session.
+The manifests carry no `version`: an installed plugin follows the commits of `main`. `/plugin marketplace update robusta-build` fetches them. The new content loads at the next session.
 
 ## License
 
-PolyForm Noncommercial 1.0.0, see `LICENSE`. The source is available; noncommercial use is free, commercial use requires a paid license from Robusta Build.
+rb-compound is source-available under PolyForm Noncommercial 1.0.0: free for noncommercial use, paid for commercial use. Commercial license: https://robusta.build
+
+The full text is in `LICENSE`.
+
+Set the license number in a session with `/plugin configure rb-compound@robusta-build` (masked input), or from a shell with `claude plugin configure rb-compound@robusta-build --values-stdin` and `{"license_number": "<number>"}` on stdin. A value applies from the next session.
+
+- Claude Code keeps the number masked in its secure storage: the macOS Keychain, otherwise its credentials file. Never in `settings.json`, the project or `CLAUDE.md`.
+- The `/plugin install` dialog shows the `license_number` field, optional: leave it empty for noncommercial use.
+- Form: `RBC-XXXXX-XXXXX-XXXXX-C`. Case, spaces and dashes are ignored.
+- A number never expires. The hook reads it locally, with no network and no server.
+- Without a valid number, about one session in 40 shows a one-line reminder at startup, never in `claude -p` or CI. Nothing is blocked.
 
 `skills/bulkman-method/scripts/masala-parser/` bundles `@masala/parser` 2.0.0 under its own license: its `LICENSE` file, copied as is, is the LGPL 2.1 text, while its `package.json` declares LGPL-3.0.

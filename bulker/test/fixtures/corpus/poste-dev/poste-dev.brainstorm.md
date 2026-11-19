@@ -6,7 +6,7 @@
 
 > **Note:** All axes completed autonomously by autobrain. Decisions are flagged with **Décision (autonome):** for review.
 
-Source story: `C:\Users\nicolas.zozol\.claude\features\poste-dev\poste-dev.story.md`
+Source story: `features\poste-dev\poste-dev.story.md`
 
 Goal of the feature: a reversible PowerShell script (apply / revert) that cleanly disables background CPU consumers (Windows telemetry, Office maintenance, WMI wakeups) on a Windows 11 Enterprise dev box, traces every change, detects GPO-locked items, and produces a before/after diagnostic — without touching Windows Update, Defender/SecurityHealth, CrowdStrike, IntelliJ, Claude Code or Docker.
 

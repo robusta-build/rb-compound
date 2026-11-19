@@ -61,16 +61,16 @@ Load the `rb-compound:boundaries` skill. Keep it at the product manager's altitu
 
 ## Mid-Session Switch to Autonomous
 
-The user can stop the interactive Q&A at any axis and have the facilitator finish the remaining axes alone. This is opt-in via an explicit French phrase from the user — never trigger it on `lfg` or `lgtm` (too generic, false-positive risk).
+The user can stop the interactive Q&A at any axis and have the facilitator finish the remaining axes alone. This is opt-in via an explicit phrase from the user, in French or English — never trigger it on `lfg` or `lgtm` (too generic, false-positive risk).
 
 **Recognized triggers** (case-insensitive substring match in any user message):
-- `passe en automatic` / `passe en auto` / `automatic` (used as a standalone command, not inside a longer answer)
-- `continue tout seul` / `continue seul`
-- `finis tout seul` / `finis seul`
+- `passe en automatic` / `passe en auto` / `switch to automatic` / `switch to auto` / `automatic` (used as a standalone command, not inside a longer answer)
+- `continue tout seul` / `continue seul` / `continue alone` / `continue on your own`
+- `finis tout seul` / `finis seul` / `finish alone` / `finish on your own`
 
 When a trigger fires:
 
-1. Acknowledge the switch in one line: *"OK, je finis les axes restants tout seul."*
+1. Acknowledge the switch in one line: *"OK, I'm finishing the remaining axes alone."* (in the language of the request)
 2. Note the cutover at the **top** of the final `.brainstorm.md` output:
    ```
    > **Note:** Axes 1 to N completed interactively with the user. Axes N+1 to 11 completed autonomously.
@@ -78,7 +78,7 @@ When a trigger fires:
 3. For each remaining axis:
    - Pick the **simplest but best practice** option.
    - Stay brief — 1–2 lines per decision, no challenge loop, no extended pros/cons.
-   - Use the label `**Décision (autonome):**` instead of `**Décision:**` to flag the choice for review.
+   - Use the label `**Decision (autonomous):**` instead of `**Decision:**` (`**Décision (autonome):**` and `**Décision:**` in a French project) to flag the choice for review.
    - Briefly note rationale (one sentence) and optionally one alternative considered.
 4. Do NOT ask any further questions, even cross-referencing ones, until the document is produced.
 5. After completing all axes autonomously, jump straight to the final summary — skip the "propose generating the final summary, wait for confirmation" step.
@@ -109,7 +109,7 @@ Example:
 - Do NOT write user stories
 - Do NOT propose detailed technical solutions
 - Stay at the product/capabilities level; Axis 11 stays at sketch zoom
-- Keep the conversation in English
+- Keep the conversation in English; the labels of the document follow the project language, read through `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md` §Project language (the French series: `**Décision:**`, `**Problème:**`, `**Options considérées:**`, `**Conséquences si on ne fait rien:**`)
 
 ## Final Output
 
@@ -127,7 +127,7 @@ Example:
 2. **Structured context** — Each axis should include:
    - The situation/problem being addressed
    - Options that were discussed
-   - The final decision with explicit **Décision:** and **Rationale:** labels
+   - The final decision with explicit **Decision:** and **Rationale:** labels
 
 3. **Conversational richness** — Preserve the substance of the discussion, not just bullet points. If there was debate or trade-off analysis, capture it.
 
@@ -135,7 +135,7 @@ Example:
 
 - Header with date, participants, and an `**Infix :**` line carrying the story's Infix verbatim — the entry keys of Open Questions & Gaps are built on it
 - One section per axis (H2 headers with `---` separators)
-- For each axis: context, options considered (if any), **Décision**, **Rationale**
+- For each axis: context, options considered (if any), **Decision**, **Rationale**
 - An "Acceptance Criteria challenge" section: the verdict per story AC, then the business edge cases proposed to storyman
 - Features (Axis 6): capability, the story's AC it maps to, test approach
 - Boundaries (Axis 11): the sketch blocks of the `rb-compound:boundaries` skill
@@ -147,17 +147,17 @@ Example:
 ```markdown
 ## 3. Core Problem
 
-**Problème:** [Description of the problem]
+**Problem:** [Description of the problem]
 
-**Conséquences si on ne fait rien:**
+**Consequences if nothing is done:**
 - [Consequence 1]
 - [Consequence 2]
 
-**Options considérées:**
+**Options considered:**
 - Option A: [description] — [pros/cons]
 - Option B: [description] — [pros/cons]
 
-**Décision:** [What was chosen]
+**Decision:** [What was chosen]
 
 **Rationale:** [Why this option was selected over others, the reasoning process]
 

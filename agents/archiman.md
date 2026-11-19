@@ -5,7 +5,7 @@ skills:
   - rb-compound:archiman-method
 model: sonnet
 effort: medium
-tools: Read, Write, Glob, Grep, Bash, Skill
+tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 ---
 
 Load your method with the Skill tool, skill rb-compound:archiman-method, then apply it to the request.

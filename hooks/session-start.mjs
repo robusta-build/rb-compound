@@ -3,6 +3,9 @@
  *
  * Design: session-hook
  * Requirements: R-SESSIONHOOK-21, R-SESSIONHOOK-22, R-SESSIONHOOK-23, R-SESSIONHOOK-24, R-SESSIONHOOK-25
+ *
+ * Design: license-key
+ * Requirements: R-LICENSEKEY-43, R-LICENSEKEY-45, R-LICENSEKEY-46
  */
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -42,16 +45,36 @@ function sessionContext(pluginDir, rootValue) {
   return context;
 }
 
-function main() {
+function readStdin() {
+  try {
+    return process.stdin.isTTY ? '' : readFileSync(0, 'utf8');
+  } catch {
+    return '';
+  }
+}
+
+async function reminderOf(stdinText) {
+  try {
+    const { reminder } = await import('./license.mjs');
+    return reminder(stdinText, process.env);
+  } catch {
+    return undefined;
+  }
+}
+
+async function main() {
   const pluginDir = dirname(dirname(fileURLToPath(import.meta.url)));
   const rootValue = process.env.CLAUDE_PLUGIN_ROOT || pluginDir;
   try {
     const additionalContext = sessionContext(pluginDir, rootValue);
-    process.stdout.write(`${JSON.stringify({ hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext } })}\n`);
+    const hookSpecificOutput = { hookEventName: 'SessionStart', additionalContext };
+    const systemMessage = await reminderOf(readStdin());
+    const output = systemMessage === undefined ? { hookSpecificOutput } : { systemMessage, hookSpecificOutput };
+    process.stdout.write(`${JSON.stringify(output)}\n`);
   } catch (error) {
     process.stderr.write(`rb-compound session-start: ${error instanceof HookError ? error.message : String(error)}\n`);
     process.exitCode = 1;
   }
 }
 
-main();
+await main();
