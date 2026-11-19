@@ -7,6 +7,11 @@
       "name": "rb-compound",
       "source": "./",
       "description": "Compound, the documentation-first workflow of Robusta Build: its agents, their role skills and the shared skills."
+    },
+    {
+      "name": "rb-business-rules",
+      "source": { "source": "github", "repo": "robusta-build/rb-business-rules" },
+      "description": "Business Rules for Claude Code: a skill that cites, tests and formats them, and the rule curator, a command that records them in the rule catalog of the project."
     }
   ]
 }

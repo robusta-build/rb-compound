@@ -1,6 +1,6 @@
 ---
 name: commit
-description: "Commit convention and precommit checklist: `type(scope): description`, only the files of the current task, no AI attribution, no emoji. Load it before any git commit."
+description: "Commit convention and precommit checklist: `type(scope): description`, only the files of the current task, no AI attribution, no emoji. Load it when the user asks for a git commit or types `/rb-compound:commit`."
 ---
 
 # Commit
