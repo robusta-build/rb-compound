@@ -5,11 +5,11 @@
 
 ## Overview
 
-`rb-compound` is Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin. The repository is both the plugin `rb-compound` (`.claude-plugin/plugin.json`) and the marketplace `robusta-build` (`.claude-plugin/marketplace.json`). It ships thirteen agents, each a header loading its role skill: the planning agents epicman, storyman, bsman and bulkman, the design agent designman, the implementation agents tddman and codeman, the bug capture agent fixman, the closing agents docman, archiman and doneman, the worktree agent wkman, and boss, which runs the routine without human validation as the session agent. It also ships the interactive skill `brainstorm`, the routine skill `compound-routine`, eight shared skills, the command `/rb-compound:start`, the `SessionStart` hook of package `hooks`, and the module `bulker`, the sources of the command bundled in `skills/bulkman-method/scripts/`.
+`rb-compound` is Compound, the documentation-first workflow of Robusta Build, as a Claude Code plugin. The repository is both the plugin `rb-compound` (`.claude-plugin/plugin.json`) and the marketplace `robusta-build` (`.claude-plugin/marketplace.json`), which lists two plugins: `rb-compound` (source `./`) and `rb-business-rules` (source github `robusta-build/rb-business-rules`, outside this repository). It ships thirteen agents, each a header loading its role skill: the planning agents epicman, storyman, bsman and bulkman, the design agent designman, the implementation agents tddman and codeman, the bug capture agent fixman, the closing agents docman, archiman and doneman, the worktree agent wkman, and boss, which runs the routine without human validation as the session agent. It also ships the interactive skill `brainstorm`, the routine skill `compound-routine`, eight shared skills, the command `/rb-compound:start`, the `SessionStart` hook of package `hooks`, and the module `bulker`, the sources of the command bundled in `skills/bulkman-method/scripts/`.
 
 ## Apps, modules, packages
 
-- app `rb-compound` — the plugin and its marketplace, read in place from the checkout; the manifests carry no `version`
+- app `rb-compound` — the plugin and its marketplace, read in place from the checkout; the manifests carry no `version`; the marketplace entry `rb-business-rules` points to a github repository, its content is not part of this project
 - package `agents` — `agents/{epicman,storyman,bsman,bulkman,designman,tddman,codeman,fixman,docman,archiman,doneman,wkman,boss}.md`, header only: `skills:` naming the role skill alone, `model: sonnet` and `effort: medium` (designman and boss: `opus`, `high`; docman: `haiku`, `low`), `tools` (absent for tddman and codeman, which inherit every tool; boss's ends with `Agent(...)` naming the eight agents it launches), and one line loading the role skill with the Skill tool
 - package `epicman-method` — epicman's method, writes `<epic>.epic.md` from `assets/epic.template.md`; reads the Definition of Done in `storyman-method` §done
 - package `storyman-method` — storyman's method, writes `<feature>.story.md` from `assets/story.template.md`; `submit` and `done` delegate to other agents
@@ -123,6 +123,7 @@ Client code: a Claude Code user.
 ```
 /plugin marketplace add robusta-build/rb-compound
 /plugin install rb-compound@robusta-build
+/plugin install rb-business-rules@robusta-build
 claude --plugin-dir <path-to-checkout>
 /rb-compound:start
 /rb-compound:commit
@@ -177,6 +178,6 @@ node scripts/bulker.mjs --help | --version
 
 ## Dependencies
 
-- Depends on: Claude Code (plugin loading, Skill and Agent tools, `SessionStart` hooks, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`); Node 20.11 or later on the `PATH` for `bulker.mjs` and `hooks/session-start.mjs`; module `bulker` (build output); `@masala/parser` 2.0.0, bundled under its own license; `git`, for wkman and the commits of boss, and `herdr` when usable, with its config file, for wkman.
+- Depends on: github `robusta-build/rb-business-rules`, only as the source of the marketplace entry `rb-business-rules`; Claude Code (plugin loading, Skill and Agent tools, `SessionStart` hooks, `${CLAUDE_SKILL_DIR}`, `${CLAUDE_PLUGIN_ROOT}`); Node 20.11 or later on the `PATH` for `bulker.mjs` and `hooks/session-start.mjs`; module `bulker` (build output); `@masala/parser` 2.0.0, bundled under its own license; `git`, for wkman and the commits of boss, and `herdr` when usable, with its config file, for wkman.
 - Module `bulker` depends on: `@masala/parser` 2.0.0 (runtime); TypeScript, `@types/node`, Vite and Vitest (build and tests).
 - Used by: Claude Code sessions that install `rb-compound@robusta-build`.
