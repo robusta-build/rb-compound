@@ -101,7 +101,7 @@ Agents and role skills name every skill `rb-compound:<skill>`. An agent or a ski
 
 ## Hook
 
-`hooks/hooks.json` runs `hooks/session-start.mjs` on `SessionStart` at startup, `/clear` and compaction: it prints the body of `compound-routine` into the context. Claude knows the routine and its words from the first request. A session started with `claude --agent rb-compound:<agent>` gets it, a subagent does not, and a resumed or forked session keeps the injection of its origin. The hook writes no file and exports no variable.
+`hooks/hooks.json` runs `hooks/session-start.mjs` on `SessionStart` at startup, `/clear` and compaction: it prints the body of `compound-routine` into the context. Claude knows the routine and its words from the first request. A session started with `claude --agent rb-compound:<agent>` gets it, a subagent does not, and a resumed or forked session keeps the injection of its origin. At `startup` only, in an interactive session without a valid license number, the hook also shows the free-version reminder through `systemMessage`, see License. The hook writes no file, exports no variable and makes no network call.
 
 ## Compatibility
 
@@ -129,5 +129,13 @@ The manifests carry no `version`: an installed plugin follows the commits of `ma
 rb-compound is source-available under PolyForm Noncommercial 1.0.0: free for noncommercial use, paid for commercial use. Commercial license: https://robusta.build
 
 The full text is in `LICENSE`.
+
+Set the license number in a session with `/plugin configure rb-compound@robusta-build` (masked input), or from a shell with `claude plugin configure rb-compound@robusta-build --values-stdin` and `{"license_number": "<number>"}` on stdin. A value applies from the next session.
+
+- Claude Code keeps the number masked in its secure storage: the macOS Keychain, otherwise its credentials file. Never in `settings.json`, the project or `CLAUDE.md`.
+- The `/plugin install` dialog shows the `license_number` field, optional: leave it empty for noncommercial use.
+- Form: `RBC-XXXXX-XXXXX-XXXXX-C`. Case, spaces and dashes are ignored.
+- A number never expires. The hook reads it locally, with no network and no server.
+- Without a valid number, about one session in 40 shows a one-line reminder at startup, never in `claude -p` or CI. Nothing is blocked.
 
 `skills/bulkman-method/scripts/masala-parser/` bundles `@masala/parser` 2.0.0 under its own license: its `LICENSE` file, copied as is, is the LGPL 2.1 text, while its `package.json` declares LGPL-3.0.
