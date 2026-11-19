@@ -62,7 +62,7 @@ Route the follow-ups the report hands you, never perform them:
 After a resolve that copied answers, pass on the report's `followUps`, one line per written document, each integrator written `rb-compound:<agent> …` where the report gives its short name, then add one epic line:
 
 - the epic exists when the target folder carries a `*.epic.md`; the kind of each written document is read from the `.story.md` or `.brainstorm.md` suffix of `applied[].source`;
-- a brainstorm received an answer → `rb-compound:storyman update <epic> avec brainstorms`, whether stories received answers or not;
+- a brainstorm received an answer → `rb-compound:storyman update <epic> with brainstorms` (`avec brainstorms` is the same argument, the bulker script prints `avec brainstorm`; markers in `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md`), whether stories received answers or not;
 - otherwise a story of the epic received one → `rb-compound:storyman update <epic>`;
 - only designs or the epic received answers, or the target is a feature folder without epic → no epic line.
 

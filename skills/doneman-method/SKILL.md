@@ -30,7 +30,7 @@ All of these hold, or the feature is refused with the first one that fails:
 - Every design doc of the feature reads `**Status:** IMPLEMENTED`.
 - Every `## Documentation updates` bullet of the story is in the past tense: the documentation was delivered and reviewed.
 - No open entry in the `## Open Questions & Gaps` of the story or the design doc: a pending entry has an empty `Resolution:`.
-- When the feature belongs to an epic, its `.epic.md` lists it in Fait.
+- When the feature belongs to an epic, its `.epic.md` lists it in Done (`## Fait` / `## Done`, either series, `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md`).
 - The checker passes: load the `rb-compound:checker` skill on the code the feature touched (`git log -- features/<feature>/` gives the feature commits, `git show --name-only` the code paths).
 
 An open fix never refuses: an entry naming the feature in a `*.fix.md` with an empty `Fixed:` is named in the report, and the archive goes on.
@@ -49,7 +49,7 @@ An open fix never refuses: an entry naming the feature in a `*.fix.md` with an e
 
 ## 3. Archive an epic
 
-After archiving a story, if every story of its epic is in the epic's `__done/` and the epic's À faire section is empty, archive the epic itself with the same path rewriting, its fix documents included, and delete its `<epic>.bulk.md`. Otherwise say in the report how many stories remain.
+After archiving a story, if every story of its epic is in the epic's `__done/` and the epic's To do section (`## À faire` / `## To do`) is empty, archive the epic itself with the same path rewriting, its fix documents included, and delete its `<epic>.bulk.md`. Otherwise say in the report how many stories remain.
 
 ## Rules
 

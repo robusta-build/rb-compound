@@ -93,7 +93,7 @@ Work whose artefacts do not survive the subagent belongs in a skill; work that m
 
 ## Writing in French
 
-Compound's shipped markdown is English, except the role skills of epicman, storyman and designman and the epic and story templates, which are French. When a French word names something this glossary already names, it refers to that term and carries no meaning of its own:
+Compound's shipped markdown is entirely English. French remains in the examples of `deslop` and in the recognised markers of `references/headers.md`. When a French word names something this glossary already names, it refers to that term and carries no meaning of its own:
 
 - geste — edit, write, refactor, step...  depending on which is meant. Never "gesture" in English.
 - gabarit — template.

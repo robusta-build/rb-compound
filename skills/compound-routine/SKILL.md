@@ -51,7 +51,7 @@ On from `pmf on` to `pmf off`, never inferred: off until `pmf on` is typed. In p
 
 ## nxt
 
-`nxt` writes nothing. It reads only `features/`, skipping `__done/`, `__future/` and `__chore/`: the first `**Status:**` line of each story and design, the À faire section of each epic, the Resolutions of the Open Questions sections, the fix documents; and git: the session's modified files, the last commits, the branches merged into the integration branch.
+`nxt` writes nothing. It reads only `features/`, skipping `__done/`, `__future/` and `__chore/`: the first `**Status:**` line of each story and design, the `À faire`/`To do` section of each epic, the Resolutions of the Open Questions sections, the fix documents; and git: the session's modified files, last commits, the branches merged into the integration branch.
 
 Current story: from the session's modified files, else the last commits. A finished task gets the commit; otherwise the routine's next step, or what stopped the work: an answered entry, a blocker, the context in one sentence.
 

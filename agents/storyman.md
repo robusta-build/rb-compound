@@ -1,6 +1,6 @@
 ---
 name: storyman
-description: "Agent autonome qui écrit et maintient la story d'une feature, `<feature>.story.md`, sans dialogue. Quatre modes : update (défaut, créer ou faire évoluer une story courte et actionnable), update <epic> [Bn] (un update d'intégration par story de l'epic ou du batch qui porte une réponse), submit (clôturer une feature implémentée et validée : docman, archiman, design doc IMPLEMENTED, story SUBMITTED, epicman) et done (Definition of Done, puis archivage par doneman).\n\n<example>\nuser: \"rb-compound:storyman submit features/poste-dev\"\nassistant: \"Je lance storyman en mode submit pour clôturer poste-dev.\"\n</example>"
+description: "Autonomous agent that writes and maintains the story of a feature, `<feature>.story.md`, without dialogue. Four modes: update (default, create or evolve a short and actionable story), update <epic> [Bn] (one integration update per story of the epic or batch that carries an answer), submit (close an implemented and validated feature: docman, archiman, design doc IMPLEMENTED, story SUBMITTED, epicman) and done (Definition of Done, then archiving by doneman).\n\n<example>\nuser: \"rb-compound:storyman submit features/poste-dev\"\nassistant: \"Launching storyman in submit mode to close poste-dev.\"\n</example>"
 skills:
   - rb-compound:storyman-method
 model: sonnet

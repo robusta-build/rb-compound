@@ -40,12 +40,12 @@ Same discipline when the owner document carries no `**Infix :**`: stop and name 
 
 ## The fix document
 
-Header, five lines, in this order. The labels keep the family's spaced colon so `nxt` greps the same shape:
+Header, five lines, in this order. The labels keep the family's spaced colon so `nxt` greps the same shape. The date label follows the language of the project, read through `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md` §Project language: `**Dernière mise à jour :**` in a French project, `**Last update :**` in an English one; `**Owner :**`, the entry blocks and the `- Arbitrage (<user>, <date>) :` bullet stay as they are:
 
 ```markdown
 # Fix : <short title — the owner, or the bug when Grain is SINGLE>
 
-**Dernière mise à jour :** AAAA-MM-JJ
+**Last update :** YYYY-MM-DD
 **Owner :** <relative path to <owner>.epic.md or <owner>.story.md>
 **Infix :** <the owner's Infix, verbatim>
 **Status :** OPEN
@@ -95,7 +95,7 @@ An ASCII diagram is required inside `Context`, before the prose, when the defect
 
 - The key is the entry's identity: the implementing agent stamps it, `reopen` addresses it, a later capture finds it again. Numbers are monotone within the document, never reused, never renumbered.
 - Priority is a suffix on the head line, P0 to P5. Two anchors are fixed, the rest is the caller's judgement: P0 blocks work right now, P5 is cosmetic. Record the priority you are given and never re-prioritise on your own.
-- `Fixed` empty is the open state and the only one, so `- Fixed:$` greps what is still open. tddman or codeman fills it with `AAAA-MM-JJ` once the checker is green; `git log` on the document finds the commit.
+- `Fixed` empty is the open state and the only one, so `- Fixed:$` greps what is still open. tddman or codeman fills it with `YYYY-MM-DD` once the checker is green; `git log` on the document finds the commit.
 - Status is OPEN while at least one entry has an empty `Fixed`, CLOSED otherwise. The implementing agent flips it to CLOSED with the last stamp; a capture or a `reopen` returns it to OPEN.
 - No `## Open Questions & Gaps` section, ever. Fix entries are not doubt entries, so nothing here reaches a bulk. An arbitration a complex bug needs belongs to its brainstorm or its design file, downstream.
 

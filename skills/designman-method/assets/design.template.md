@@ -1,10 +1,10 @@
 # Template — design file
 
-Propriétaire : `rb-compound:designman`. L'agent lit ce fichier à chaque écriture et ne le recopie jamais.
+Owner: `rb-compound:designman`. The agent reads this file at every write and never copies it.
 
-- Obligatoires : Goal, Boundaries, Requirements, Acceptance Criteria. Avant d'écrire, l'agent vérifie qu'aucune ne manque ; une section obligatoire absente d'un document existant est recréée, jamais laissée manquante.
-- Optionnelles : les autres. Omises quand elles n'apportent rien, jamais laissées vides.
-- L'ordre des sections est celui du template. Aucune section hors template sauf nécessité réelle.
+- Mandatory: Goal, Boundaries, Requirements, Acceptance Criteria. Before writing, the agent checks that none is missing; a mandatory section missing from an existing document is recreated, never left missing.
+- Optional: the others. Omitted when they bring nothing, never left empty.
+- The order of the sections is the template's. No section outside the template unless truly necessary.
 
 ```markdown
 # Design: <short title>
@@ -15,7 +15,7 @@ Propriétaire : `rb-compound:designman`. L'agent lit ce fichier à chaque écrit
 **Status:** DRAFT
 **Sources:** <relative links: story, brainstorm, epic>
 
-<aucun `## Progress` à l'écriture : le bloc naît quand l'implémentation démarre et appartient au main agent — sa place est ici, entre l'en-tête et `## Goal`, sa grammaire dans `rb-compound:compound-routine`, `references/progress.md`>
+<no `## Progress` at writing: the block is born when the implementation starts and belongs to the main agent — its place is here, between the header and `## Goal`, its grammar in `rb-compound:compound-routine`, `references/progress.md`>
 
 ## Goal
 

@@ -71,13 +71,13 @@ boss [atw | all the way] <target> [<stop>]
 
 - `boss landing-page`, or `boss <path/to/story.md>` — runs the story to submit, submit included
 - `boss landing-page until design` — stops once the design is written, DRAFT, so I can approve it
-- `boss seo, landing-page et deploy jusqu'au brainstorm` — three brainstorms, their relevant OQs in the report
+- `boss seo, landing-page and deploy jusqu'au brainstorm` — three brainstorms, their relevant OQs in the report
 - `boss new story site-modifications` — storyman writes the story first, then boss goes on
 - `boss robusta-v2` — starts at the current batch and chains the next ones while the lock allows it
 - `boss robusta-v2 batch B2` — B2 coded and submitted if the lock allows it; the run stops after B2
 - `boss atw landing-page`, `boss all the way robusta-v2 until design` — the same runs, boss deciding every `ask` entry
 
-Where to stop: story, brainstorm, design, code, submit; `submit` by default. `jusqu'au <step>` and `jusqu'à la <step>` read as `until <step>`, `until land` as `until submit`. No stop is read from free text: `boss seo, donne moi les OQs pertinentes du brainstorm` runs to submit.
+Where to stop: story, brainstorm, design, code, submit; `submit` by default. `jusqu'au <step>` and `jusqu'à la <step>` read as `until <step>`, `until land` as `until submit`. No stop is read from free text: `boss seo, give me the relevant OQs of the brainstorm` runs to submit. The brainstorm argument of storyman is launched as `with brainstorm` (`with brainstorms` for an epic); `avec brainstorm` and `avec brainstorms` are read with the same meaning. Epic and story markers are read in either series, French or English, as named inline below; the pairs live in `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md`.
 
 `boss prepare` is a separate command, run before boss: the housekeeping between the user's arbitration and the run (§boss prepare).
 
@@ -114,16 +114,16 @@ REJECT: `boss seo until approve` — `boss refused: unknown step approve, use st
 
 1. Pre-flight + clean-branch guard, after the target is read
 2. Check the target and its batches, read where each story stands
-3. Create the story (`new`, or a "story à écrire" line) or update it; sort all its pending entries
+3. Create the story (`new`, or a "story to write" line, `story à écrire` / `story to write`) or update it; sort all its pending entries
 4. Brainstorm (bsman) → <story>.brainstorm.md
     - entry sorted `decide` or `nothing`: boss answers `lgtm (boss)`
     - `ask` entry, rloq: boss keeps the Proposition and reports it; the story goes on to its design DRAFT and stops before code
     - `ask` entry, atw: boss decides it, signs it, logs it
-    - `rb-compound:storyman update <story> avec brainstorm`, one call: it folds the brainstorm and the signed entries
+    - `rb-compound:storyman update <story> with brainstorm`, one call: it folds the brainstorm and the signed entries
 5. Design (designman) → <story>.design.md
     - OQs: sorted as in 4; `rb-compound:designman update` folds every resolved entry before the approval, in both modes
     - boss flips DRAFT → APPROVED when every AC is cited verbatim, the Boundaries are traced and, in rloq, no `ask` is pending
-6. Implement (tddman/codeman), one story after the other, in a batch the lock lets through or a `Hors batch` story named directly; in rloq, only stories with no pending `ask`
+6. Implement (tddman/codeman), one story after the other, in a batch the lock lets through or an `Outside batch` story (`Hors batch`) named directly; in rloq, only stories with no pending `ask`
 7. storyman submit, one story after the other; boss runs the closing commit
 8. Report: one line per story, the entries against the story, the hand-offs, the `ask` entries pending or decided
 
@@ -169,30 +169,30 @@ Target:
   - an unknown `<step>`: `boss refused: unknown step <step>, use story, brainstorm, design, code or submit.`; for `until prepare` the reply adds `run boss prepare <x>.`;
   - a name found nowhere without `new`, or stories from two epics;
   - `prepare` on an unknown story, epic or batch, or with `new story <name>`: prepare needs an existing target. A name absent from the checkout is first looked up on the local branches, and a clean story of the checkout absent from the existing expected branch counts as unknown: `boss refused: <name> is not on <expected branch>.` (§boss prepare);
-  - an epic whose À faire carries no `Batch Bn`: `boss refused: no batch in <epic>.epic.md, run epicman <epic>.`;
+  - an epic whose To do section (`## À faire` / `## To do`) carries no `Batch Bn`: `boss refused: no batch in <epic>.epic.md, run epicman <epic>.`;
   - a target whose stories are all submitted gets `nothing to prepare`, no commit, already modified documents included.
 
 Batches, read in `<epic>.epic.md`, never written; boss never chooses nor changes the content of a batch:
 
-- a batch is the bullets under `Batch Bn` of À faire, read as `rb-compound:storyman update <epic> [Bn]` does: a link gives the story path, a "story à écrire" line gives the slug at its head. `Hors batch` bullets are never prepared with a batch; a `Hors batch` story named directly in the request is a story target, never held by the lock;
-- a story counts as submitted when SUBMITTED, LANDED or DONE, or already moved to Fait;
-- the current batch is the first `Batch Bn` of À faire holding a story not submitted; `batch <Bn>` names another one;
+- a batch is the bullets under `Batch Bn` of To do, read as `rb-compound:storyman update <epic> [Bn]` does: a link gives the story path, a "story to write" line (`story à écrire` / `story to write`) gives the slug at its head. `Outside batch` bullets (`Hors batch`) are never prepared with a batch; an `Outside batch` story named directly in the request is a story target, never held by the lock;
+- a story counts as submitted when SUBMITTED, LANDED or DONE, or already moved to Done (`## Fait` / `## Done`);
+- the current batch is the first `Batch Bn` of To do holding a story not submitted; `batch <Bn>` names another one;
 - the lock: `Bn` is coded only when every story of the batches above it is submitted; otherwise it is held by the lock: its documents are written, its code is not, even when named by `batch <Bn>`. A pending hand-off never blocks;
-- `boss <epic>` starts at the current batch; once every story of `Bn` is submitted, `Bn+1` runs like `Bn`. The run ends when the lock holds the next batch (documents written, no code), when À faire has no batch left, or after `Bn` with `batch <Bn>`.
+- `boss <epic>` starts at the current batch; once every story of `Bn` is submitted, `Bn+1` runs like `Bn`. The run ends when the lock holds the next batch (documents written, no code), when To do has no batch left, or after `Bn` with `batch <Bn>`.
 
 Where each story stands, first match wins. Boss reads the statuses only and compares no date:
 
 - story SUBMITTED, LANDED or DONE → nothing to do, reported as such; a READY story reads as ACTIVE
 - design file APPROVED, with or without a `## Progress` block → Phase 6
 - design file DRAFT → Phase 5, from step 2: fold, then approval
-- story ACTIVE with its design IMPLEMENTED, a story reopened by `rb-compound:storyman update` → `rb-compound:designman update <story> : story reopened: <reason of its « réouverte » Décisions line>`, then Phase 5
+- story ACTIVE with its design IMPLEMENTED, a story reopened by `rb-compound:storyman update` → `rb-compound:designman update <story> : story reopened: <reason of its Decisions line>`, the line being `réouverte : <pourquoi>` / `reopened: <why>`, then Phase 5
 - brainstorm present → Phase 4, storyman update step
 - story present → Phase 4
 - no story → Phase 3
 
 Boss never runs `rb-compound:bulkman` nor `bulker` and never writes the bulk: an answer written in `<epic>.bulk.md` reaches boss once the user has run `rb-compound:bulkman resolve <epic>` themselves.
 
-Before advancing a story, an answer found in one of its documents and not yet in the body goes to its owner: `rb-compound:storyman update` for the story, `rb-compound:storyman update avec brainstorm` for the brainstorm, `rb-compound:designman update` for the design file. An answer is a human Resolution, or an atw signature `lgtm (boss atw)[ : <option>]` left by this run or an earlier one, in every run, atw or not: boss routes it and never stops on it. A plain agent signature `lgtm (<agent>)` such as `lgtm (boss)` folds on the owner's next pass; for the design file, the fold of Phase 5 step 2 is that pass, before every approval. An answer named by key in boss's prompt goes the same way, as the event of the owner's update (`rb-compound:designman update <story> : <key> answered: <answer>`); boss writes no Resolution for it. An answer that changes a contract sends the design back to DRAFT, and Phase 5 approves it again.
+Before advancing a story, an answer found in one of its documents and not yet in the body goes to its owner: `rb-compound:storyman update` for the story, `rb-compound:storyman update with brainstorm` for the brainstorm, `rb-compound:designman update` for the design file. An answer is a human Resolution, or an atw signature `lgtm (boss atw)[ : <option>]` left by this run or an earlier one, in every run, atw or not: boss routes it and never stops on it. A plain agent signature `lgtm (<agent>)` such as `lgtm (boss)` folds on the owner's next pass; for the design file, the fold of Phase 5 step 2 is that pass, before every approval. An answer named by key in boss's prompt goes the same way, as the event of the owner's update (`rb-compound:designman update <story> : <key> answered: <answer>`); boss writes no Resolution for it. An answer that changes a contract sends the design back to DRAFT, and Phase 5 approves it again.
 
 The stop is `<stop>`, `submit` by default, and the stops of §Pipeline Overview apply in both modes. In rloq, a story carrying a pending `ask` entry in its story, brainstorm or design goes on to its design DRAFT, the next agents assuming the Propositions, and stops before code, never past the stop. In atw, boss decides those entries and the story goes on to the stop.
 
@@ -210,7 +210,7 @@ Boss writes no entry, and never writes nor rewrites a `- Rloq:` line: the line b
 
 In rloq, the prompts to bsman and designman name the `ask` keys to assume. A design doubt that contradicts one of them becomes a Gap of the design: both entries stay pending, and the design stays DRAFT.
 
-In atw, a signature goes to its owner before the next agent of the story starts: story and brainstorm through `rb-compound:storyman update <story> avec brainstorm` (`rb-compound:storyman update <story>` while no brainstorm exists), design through `rb-compound:designman update <story> : fold the resolved entries`. Until folded, the prompts of the next agents name each retained option by key. A fold that changes a contract sends the design back to DRAFT, and Phase 5 approves it again. The entries born in a fold update are sorted and decided the same way, with one more owner update: two rounds per document and per phase; the entries still signed after that fold on the owner's next pass and do not hold the approval.
+In atw, a signature goes to its owner before the next agent of the story starts: story and brainstorm through `rb-compound:storyman update <story> with brainstorm` (`rb-compound:storyman update <story>` while no brainstorm exists), design through `rb-compound:designman update <story> : fold the resolved entries`. Until folded, the prompts of the next agents name each retained option by key. A fold that changes a contract sends the design back to DRAFT, and Phase 5 approves it again. The entries born in a fold update are sorted and decided the same way, with one more owner update: two rounds per document and per phase; the entries still signed after that fold on the owner's next pass and do not hold the approval.
 
 Each entry decided in atw gets one line in `decisions-and-questions.md`, confidence `high`, `medium` or `low`, nothing in between:
 
@@ -223,7 +223,7 @@ In a design doc boss writes only its Status line, its `## Progress` block, `lgtm
 ## Phase 3: Story
 
 - `new story <name>`: `rb-compound:storyman <name> : <context from the request>`.
-- A "story à écrire" line of a batch: `rb-compound:storyman <slug> : <line text>`, written in the epic directory; no `new` needed.
+- A "story to write" line of a batch: `rb-compound:storyman <slug> : <line text>`, written in the epic directory; no `new` needed.
 - Existing story: `rb-compound:storyman update <story path>` only when it has no Acceptance Criteria or carries an answer to fold (Phase 2). Otherwise it is left as is.
 - Sort every pending entry of the story; in atw, the decided entries are folded before Phase 4. Stop here on `until story`.
 
@@ -231,7 +231,7 @@ In a design doc boss writes only its Status line, its `## Progress` block, `lgtm
 
 1. `rb-compound:bsman <story path>` writes `<story>.brainstorm.md` next to the story. One bsman per story, in parallel.
 2. Sort its Open Questions.
-3. `rb-compound:storyman update <story path> avec brainstorm`. Without `avec brainstorm` storyman ignores the brainstorm. The challenged AC, the edge cases and, in atw, the decided entries enter the story in this one call: no separate fold update.
+3. `rb-compound:storyman update <story path> with brainstorm`. Without `with brainstorm` storyman ignores the brainstorm. The challenged AC, the edge cases and, in atw, the decided entries enter the story in this one call: no separate fold update.
 4. Sort the story's new Open Questions.
 
 Stop here on `until brainstorm`. Commit the documents of the batch.
@@ -248,7 +248,7 @@ Commit the documents of the batch.
 
 ## Phase 6: Implement
 
-One story after the other on `epic/<epic>`, in the order of the request or of the epic's "À faire", in a batch the lock lets through (Phase 2, Batches) or a `Hors batch` story named directly, which the lock never holds; in rloq, only the stories with no pending `ask` entry. The others stay at design DRAFT, or `held by the lock`. Each story is implemented, then submitted in Phase 7, before the next one starts: the next story codes on up-to-date docs.
+One story after the other on `epic/<epic>`, in the order of the request or of the epic's "To do", in a batch the lock lets through (Phase 2, Batches) or an `Outside batch` story named directly, which the lock never holds; in rloq, only the stories with no pending `ask` entry. The others stay at design DRAFT, or `held by the lock`. Each story is implemented, then submitted in Phase 7, before the next one starts: the next story codes on up-to-date docs.
 
 1. Launch tddman, or codeman when the story has no design file or is a spike:
    ```
@@ -351,8 +351,8 @@ Without pmf, or after `pmf off`, `boss` alone gets `I need a feature name : stor
 Pick, read only, one epic per run:
 
 - the epics are the `features/**/*.epic.md` outside `__done/`, `__future/` and `__chore/`;
-- an epic is done when it lies under `__done/`, or when its À faire lists no item;
-- each id of its `**Depends on :**` line resolves as `rb-compound:epicman-method` §Module et dépendances says: `features/**/<id>/*.epic.md`, `__done/` included, its `**Epic :**` line confirmed; an id found nowhere reads blocked;
+- an epic is done when it lies under `__done/`, or when its To do lists no item;
+- each id of its `**Depends on :**` line resolves as `rb-compound:epicman-method` §Module and dependencies says: `features/**/<id>/*.epic.md`, `__done/` included, its `**Epic :**` line confirmed; an id found nowhere reads blocked;
 - an epic is unblocked when it is not done, lies on no `**Depends on :**` cycle, and every id it depends on is done;
 - among several unblocked epics, the one whose file was committed last (`git log -1 --format=%ct -- <path>`), ties in path byte order.
 
@@ -364,7 +364,7 @@ Run on the epic: boss launches `rb-compound:epicman` and `rb-compound:tddman` on
 
 1. Sort every empty entry of the epic's `## Open Questions & Gaps` with `rb-compound:relevant-oq`: `decide` and `nothing` get `Resolution: lgtm (boss)`; `ask` gets `Resolution: lgtm (boss atw)` for the Proposition, `lgtm (boss atw) : <option, one line>` for another option, and its D-line in `decisions-and-questions.md` (§Sorting Open Questions). These Resolutions are boss's only writes in the epic.
 2. When step 1 signed an entry: `rb-compound:epicman update <epic> : fold the resolved entries`.
-3. Each À faire bullet of the epic, in order:
+3. Each To do bullet of the epic, in order:
    ```
    rb-compound:tddman <epic path> — <bullet> LFG fast
    pmf: no story, no design; this bullet and the epic's Boundaries are the spec. Do not ask questions.

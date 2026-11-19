@@ -45,7 +45,7 @@ Cover all axes. Navigation is non-linear — information from one axis may infor
 | 10 | Major Risks | Product, technical, adoption risks |
 | 11 | Boundaries | The apps, modules and packages the feature crosses or creates, and their API at sketch zoom |
 
-For each axis: pick the simplest sound option, state it as `**Décision (autonome):**`, give a one-sentence rationale, and optionally note one alternative considered. Stay brief — no challenge loop, no extended pros/cons. When an axis has two distinct paths, load the `rb-compound:schematic` skill and draw them.
+For each axis: pick the simplest sound option, state it as `**Decision (autonomous):**` (`**Décision (autonome):**` in a French project), give a one-sentence rationale, and optionally note one alternative considered. Stay brief — no challenge loop, no extended pros/cons. When an axis has two distinct paths, load the `rb-compound:schematic` skill and draw them.
 
 ### Step 3 — Feature Testability (Axis 6)
 
@@ -68,7 +68,7 @@ Produce the `.brainstorm.md` directly (no confirmation step).
 - Do NOT write user stories
 - Do NOT propose detailed technical solutions
 - Stay at the product/capabilities level; Axis 11 stays at sketch zoom
-- Write the document in English
+- Write the document in English; only its labels follow the project language, read through `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md` §Project language (`**Décision (autonome):**`, `**Problème:**` and `**Options considérées:**` in a French project, `**Decision (autonomous):**`, `**Problem:**` and `**Options considered:**` in an English one)
 
 ## Final Output
 
@@ -81,10 +81,10 @@ Produce the `.brainstorm.md` directly (no confirmation step).
 - Header with date, "Participants: bsman (autonomous)", and an `**Infix :**` line carrying the story's Infix verbatim — the entry keys of Open Questions & Gaps are built on it
 - At the **top**, the cutover note:
   ```
-  > **Note:** All axes completed autonomously by bsman. Decisions are flagged with **Décision (autonome):** for review.
+  > **Note:** All axes completed autonomously by bsman. Decisions are flagged with **Decision (autonomous):** for review.
   ```
 - An "Acceptance Criteria challenge" section: the verdict per story AC, then the missing business edge cases proposed to storyman — doubts go to Open Questions & Gaps, never inline
-- One section per axis (H2 headers with `---` separators), each with context, options considered (if any), **Décision (autonome):**, **Rationale:**
+- One section per axis (H2 headers with `---` separators), each with context, options considered (if any), **Decision (autonomous):**, **Rationale:**
 - Features (Axis 6): capability, the story's AC it maps to, test approach
 - Boundaries (Axis 11): the sketch blocks of the `rb-compound:boundaries` skill
 - An "Open Questions & Gaps" section at the end (per the `rb-compound:open-question` skill)
@@ -95,13 +95,13 @@ Produce the `.brainstorm.md` directly (no confirmation step).
 ```markdown
 ## 3. Core Problem
 
-**Problème:** [Description of the problem]
+**Problem:** [Description of the problem]
 
-**Options considérées:**
+**Options considered:**
 - Option A: [description] — [pros/cons]
 - Option B: [description] — [pros/cons]
 
-**Décision (autonome):** [What was chosen]
+**Decision (autonomous):** [What was chosen]
 
 **Rationale:** [Why this option, in one sentence]
 

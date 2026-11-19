@@ -9,7 +9,7 @@ Nothing here bounds what may be drawn: when none fits, compose from the primitiv
 
 When: a function read at a handful of points, with its ends named. Prefer it whenever the values themselves are the message.
 
-Prevents: drawing a curve when six numbers would do. If the reader needs the shape rather than the values — a minimum, a plateau, a change of régime — use pattern H instead.
+Prevents: drawing a curve when six numbers would do. If the reader needs the shape rather than the values — a minimum, a plateau, a change of regime — use pattern H instead.
 
 ```
   The defence law at s = 1:  D = (1 - W*) / (1 + s)

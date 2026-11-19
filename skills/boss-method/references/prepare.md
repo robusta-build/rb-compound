@@ -2,10 +2,12 @@
 
 `boss prepare <feature> | <epic> [batch <Bn>]` does the housekeeping between the user's arbitration and the boss run: fold the answers, sign the entries that need no human, approve the designs that pass the check, apply the arbitrated fixes, commit, the documents of its scope already modified included. It never creates a story, a brainstorm or a design: that work stays with `boss <target>`, in rloq or atw. Started from `main`, `master` or `develop`, it ends back there. Phase 1 and the Target and Batches rules of Phase 2 apply; Phases 3 to 8 do not.
 
+The markers of epics and stories are read in either series, French or English, as named inline below (`avec brainstorm` and `avec brainstorms` are read as `with brainstorm` and `with brainstorms`); the pairs live in `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md`.
+
 Scope:
 
 - `<feature>`: its story, brainstorm and design, and the open entries of the `*.fix.md` whose `**Owner :**` is that story. An epic's fix document is read by an epic target only.
-- `<epic> [batch <Bn>]`: the epic itself, the stories of the current batch or of `Bn` (Phase 2, Batches, `Hors batch` excluded), their brainstorms and designs, and the open entries of the `*.fix.md` whose Owner is the epic or one of those stories. Other batches are not read.
+- `<epic> [batch <Bn>]`: the epic itself, the stories of the current batch or of `Bn` (Phase 2, Batches, `Outside batch` excluded; `Hors batch` in a French epic), their brainstorms and designs, and the open entries of the `*.fix.md` whose Owner is the epic or one of those stories. Other batches are not read.
 - A fix entry is open when its `- Fixed:` line is empty, arbitrated when it carries a `- Arbitrage (<user>, <date>) :` bullet anywhere in the entry. The fix format of fixman does not change.
 
 Read-only pass, before the branch switch of Phase 1, nothing written:
@@ -30,14 +32,14 @@ Steps, in this order: fold, then approve, then fix.
 1. Sort: boss loads `rb-compound:relevant-oq` and sorts every empty entry of the scope's stories, brainstorms, designs and epic, as §Sorting Open Questions does in rloq. `decide` or `nothing` gets `Resolution: lgtm (boss)` before the owner's update, which folds it in the same run. An `ask` entry stays empty and goes into the report: prepare never fills an `ask` Resolution.
 2. Fold: every filled Resolution goes to its owner, APIs unchanged, in this order:
    ```
-   rb-compound:storyman update <story> avec brainstorm         # story with a brainstorm and no design
-   rb-compound:storyman update <story> [avec brainstorm]       # story target carrying a filled Resolution
-   rb-compound:storyman update <epic> [Bn] avec brainstorms    # epic target
+   rb-compound:storyman update <story> with brainstorm          # story with a brainstorm and no design
+   rb-compound:storyman update <story> [with brainstorm]        # story target carrying a filled Resolution
+   rb-compound:storyman update <epic> [Bn] with brainstorms     # epic target
    rb-compound:designman update <story> : fold the resolved entries   # design carrying a filled Resolution, or named by storyman's output
    rb-compound:epicman update <epic>                           # epic target, last fold, once storyman has passed the epic entries
    ```
-   A story with a brainstorm and no design gets `rb-compound:storyman update <story> avec brainstorm` on every prepare, as Phase 2 does for a full run: no file records a brainstorm fold. An entry born in a fold is sorted and signed the same way, folds on the owner's next pass and does not hold the approval. An owner reporting BLOCKED leaves its document as is, is named in the report, and the other documents go on.
-3. Missing documents: a "story à écrire" line, a story with no brainstorm or no design is named in the report with the boss run that writes it, never written. Never called: storyman to create a story, bsman, designman to create a design, bulkman, `bulker`, `rb-compound:storyman submit`, `rb-compound:storyman done`.
+   A story with a brainstorm and no design gets `rb-compound:storyman update <story> with brainstorm` on every prepare, as Phase 2 does for a full run: no file records a brainstorm fold. An entry born in a fold is sorted and signed the same way, folds on the owner's next pass and does not hold the approval. An owner reporting BLOCKED leaves its document as is, is named in the report, and the other documents go on.
+3. Missing documents: a "story to write" line (`story à écrire` / `story to write`), a story with no brainstorm or no design is named in the report with the boss run that writes it, never written. Never called: storyman to create a story, bsman, designman to create a design, bulkman, `bulker`, `rb-compound:storyman submit`, `rb-compound:storyman done`.
 4. Approve: after the folds, a design DRAFT, one a fold sent back to DRAFT included, is approved when no `ask` entry is pending in its story, brainstorm or design and the check of Phase 5 step 3 passes: `**Status:** APPROVED (<YYYY-MM-DD> — validated by boss)`, that line only. Otherwise it stays DRAFT, with no `rb-compound:designman update` retry, and the report gives the reason: the AC keys, `Boundaries`, or `<n> ask`. A design IMPLEMENTED under a reopened story is not touched: its story and brainstorm answers fold, and the report names `boss <feature>`.
 5. Fix: each open arbitrated fix of the scope runs the fix cycle of `rb-compound:fixman-method`, one after the other, never in parallel. tddman, or codeman when no test runner covers the fixed files, implements it and stamps `Fixed:`; docman and archiman take the doc lines it reports stale; one commit holds code, fix document and docs.
    ```
