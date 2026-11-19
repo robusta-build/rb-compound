@@ -25,7 +25,7 @@
 - package `wkman-method` — wkman's method, opens, resumes or closes the worktree of `feat/<feature>` or `epic/<epic>` through herdr or git, then runs `features/__chore/setup.sh|ps1`
 - package `boss-method` — boss's method, runs the routine on a named feature or epic up to submit, one commit per step, and pmf, which commits on the current branch and pushes it; `references/prepare.md`, read for `boss prepare` only, and `references/roadmap.md`, read for `boss roadmap` only, which keeps `roadmap.yaml`
 - package `brainstorm` — the interactive product brainstorm, launched by the user as `/rb-compound:brainstorm`
-- package `compound-routine` — the Compound routine, `nxt`, pmf, the boss hand-over and commit exception, and the routine words, injected into the session by package `hooks`, its rules applied on an explicit Compound call only; `references/ubiquitous-language.md`, the Compound glossary, `references/progress.md`, the grammar of a design's `## Progress` block, and `references/headers.md`, the French and English series of document headers
+- package `compound-routine` — the Compound routine, `nxt`, pmf, the boss launch and commit exception, and the routine words, injected into the session by package `hooks`, its rules applied on an explicit Compound call only; `references/ubiquitous-language.md`, the Compound glossary, `references/progress.md`, the grammar of a design's `## Progress` block, and `references/headers.md`, the French and English series of document headers
 - package `start` — `commands/start.md`, the command `/rb-compound:start`
 - package `hooks` — `hooks/hooks.json`, the `SessionStart` registration at startup, `/clear` and compaction, `hooks/session-start.mjs`, which prints the body of `compound-routine` into the session context, and `hooks/license.mjs`, which reads the license number and draws the free-version reminder
 - package `boundaries` — notation of the APIs a document crosses, and its overview figure
@@ -114,7 +114,7 @@ Client code: the user, the session, and the agents and command of the plugin.
 - `rb-compound:<agent>-method` — loaded only by its agent; its description routes a request to the agent, never applied inline. Its files are read as `${CLAUDE_SKILL_DIR}/<path>`, fallback `${CLAUDE_PLUGIN_ROOT}/skills/<agent>-method/<path>`.
 - `rb-compound:compound-routine` — injected into the session context by the hook of package `hooks`; without the hook, loaded by its description. Its rules apply on an explicit Compound signal only (`nxt`, `boss`, `pmf on|off`, `wk`, the name of a Compound agent or of `/start`, a story, epic, brainstorm, design, fix or bulk document). `/rb-compound:start` loads it when the hook did not inject it.
   - `nxt` writes nothing and prints 1 to 3 options `<n>. <item> — <stage> — <single next action>`.
-  - `boss <target>` outside `rb-compound:boss` prints `boss <target> runs in its own session: claude --agent rb-compound:boss "boss <target>"` and launches nothing.
+  - `boss <target>`, with or without the `rb-compound:` prefix, launches the agent `rb-compound:boss` in the background and reports its result.
   - Read paths: `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/ubiquitous-language.md` and `${CLAUDE_PLUGIN_ROOT}/skills/compound-routine/references/progress.md`; a role skill reads them first at `${CLAUDE_SKILL_DIR}/../compound-routine/references/<file>`.
 - `rb-compound:<skill>` for `boundaries`, `checker`, `code-comments`, `commit`, `deslop`, `open-question`, `relevant-oq`, `schematic`; agents and role skills name them in full, shared skills name each other by short name.
 
@@ -137,7 +137,7 @@ claude --agent rb-compound:boss "<request>"
 - `userConfig.license_number` (`plugin.json`): optional, `sensitive`, no `required`, no `default`; a string `RBC-XXXXX-XXXXX-XXXXX-C`, case, spaces and dashes ignored. Claude Code stores it (Keychain, else its credentials file) and passes it to the hook as `CLAUDE_PLUGIN_OPTION_LICENSE_NUMBER`, from the next session; unset, the variable is absent. The plugin writes no file for it.
 - `/rb-compound:start`, no argument: reads `README.md`, `ubiquitous-language.md` and `root.archi.md` at the root of the working directory, loads `rb-compound:compound-routine` once, only when the context does not hold the header line of package `hooks`, runs `nxt`. Stdout: the project's purpose in at most 3 lines, one line `<file>: absent` per missing file, then the `nxt` output. Writes nothing, creates no missing file.
 - `/rb-compound:commit`: commits the files of the current task, `type(scope): description`, no AI attribution, no emoji; a build or test known broken stops it.
-- `claude --agent rb-compound:boss "<request>"`: boss as the session agent; in any other session, `compound-routine` §boss hands the request over. Requests, in the launch message or later in the session:
+- `claude --agent rb-compound:boss "<request>"`: boss as the session agent; in any other session, `compound-routine` §boss launches `rb-compound:boss` as a background agent. Requests, in the launch message or later in the session:
 
 ```
 boss [atw | all the way] <feature> | <epic> [batch <Bn>] [until <step>]
