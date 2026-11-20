@@ -60,11 +60,12 @@ NOT RELEVANT: `Should we use prettier or Oxfmt`: they do the same a different wa
 Tell boss its target and, if needed, where to stop. Free text after the target is fine; it sets neither a mode nor a stop.
 
 ```
-boss [atw | all the way] <target> [<stop>]
+boss [atw | all the way] <target> [on <branch>] [<stop>]
 
 <target> ::= <feature>[, <feature>…] | <story path>
            | <epic> [batch <Bn>]               # a directory holding a *.epic.md, or its path
            | new story <name>
+<branch> ::= a git branch, `sur <branch>` read as `on <branch>`
 <stop>   ::= until <step> | jusqu'au <step> | jusqu'à la <step>
 <step>   ::= story | brainstorm | design | code | submit     # land reads as submit
 ```
@@ -76,6 +77,7 @@ boss [atw | all the way] <target> [<stop>]
 - `boss robusta-v2` — starts at the current batch and chains the next ones while the lock allows it
 - `boss robusta-v2 batch B2` — B2 coded and submitted if the lock allows it; the run stops after B2
 - `boss atw landing-page`, `boss all the way robusta-v2 until design` — the same runs, boss deciding every `ask` entry
+- `boss atw landing-page on feat/landing-page` — the same run, on that branch, created if missing (§Phase 1)
 
 Where to stop: story, brainstorm, design, code, submit; `submit` by default. `jusqu'au <step>` and `jusqu'à la <step>` read as `until <step>`, `until land` as `until submit`. No stop is read from free text: `boss seo, give me the relevant OQs of the brainstorm` runs to submit. The brainstorm argument of storyman is launched as `with brainstorm` (`with brainstorms` for an epic); `avec brainstorm` and `avec brainstorms` are read with the same meaning. Epic and story markers are read in either series, French or English, as named inline below; the pairs live in `${CLAUDE_SKILL_DIR}/../compound-routine/references/headers.md`.
 
@@ -145,10 +147,10 @@ In rloq only, a pending `ask` entry stops its story at design DRAFT. A `rb-compo
 
 1. Run from the project root (it holds `features/`, `roadmap.yaml` or `CLAUDE.md`). Boss never leaves pwd.
 2. Phase 2 Target runs first, read only, then for `boss prepare` the read-only pass of §boss prepare: a refusal, `boss stopped: ...` or `nothing to prepare` switches no branch and writes no file. For `boss prepare`, when the expected branch exists and is not the current one, both read that branch, with no switch.
-3. The expected branch is `epic/<epic>` for a story of an epic, `feat/<story>` for a story outside any epic.
+3. The expected branch is the one the request names (`on <branch>`), else `epic/<epic>` for a story of an epic, `feat/<story>` for a story outside any epic.
 4. Read the current branch (`git rev-parse --abbrev-ref HEAD`):
    - the expected branch: stay there, it is a resume or the user prepared it;
-   - `main`, `master` or `develop`: switch to the expected branch, created from HEAD when missing (`git switch -c`). Never `git checkout -B`, which resets an existing branch;
+   - `main`, `master` or `develop`: switch to the expected branch when it exists. A missing branch is created (`git switch -c`, never `git checkout -B`) only when the request names it, `on <branch>`; otherwise stop with `boss stopped: <expected branch> does not exist; relaunch with on <expected branch>.` and write nothing;
    - any other branch: refuse with `boss refused: on <branch>, expected <expected branch>.` and write nothing.
 5. A dirty working tree is fine: boss stages by explicit path and never stashes. A switch that fails on a conflict stops the run.
 6. In a linked worktree opened by `wk` (`rb-compound:wkman-method`), the same rules apply.
